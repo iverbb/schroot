@@ -54,10 +54,6 @@ include("cmake/CompilerChecks.cmake")
 find_package(Threads REQUIRED)
 find_package(GTest)
 
-include(FindBoost)
-find_package(Boost REQUIRED
-             COMPONENTS filesystem system iostreams program_options regex)
-
 # HEADER CHECKS
 include(CheckIncludeFileCXX)
 
