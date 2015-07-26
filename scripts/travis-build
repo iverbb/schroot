@@ -1,0 +1,48 @@
+#!/bin/sh
+# Test commit with Travis CI (travis-ci.org)
+
+set -e
+set -x
+
+download_cmake()
+{
+  if [ ! -d travis-downloads ]; then
+    (
+      mkdir travis-downloads
+      cd travis-downloads
+      wget http://www.cmake.org/files/v3.6/cmake-3.6.0-Linux-x86_64.tar.gz
+    )
+  fi
+}
+
+unpack_cmake()
+{
+  tar xf travis-downloads/cmake-3.6.0-Linux-x86_64.tar.gz
+  echo "$(pwd)/cmake-3.6.0-Linux-x86_64/bin"
+}
+
+cpp()
+{
+    (
+        rm -rf build
+        mkdir build
+        cd build
+        (
+            mkdir gtest
+            cd gtest
+            cmake /usr/src/gtest
+            make
+        )
+        GTEST_ROOT="$(pwd)/gtest" cmake -Dtest=ON .. || cat CMakeFiles/CMakeError.log
+        make
+        fakeroot ctest -V
+        make DESTDIR=../install install
+    )
+}
+
+
+download_cmake
+PATH="$(unpack_cmake):$PATH"
+cpp
+
+exit 0

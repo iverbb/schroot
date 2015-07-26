@@ -1,0 +1,29 @@
+sudo: required
+dist: trusty
+
+language: cpp
+
+compiler:
+  - gcc
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - debhelper
+      - pkg-config
+      - libpam0g-dev
+      - libboost-all-dev
+      - gettext
+      - libgtest-dev
+      - groff-base
+      - po4a
+      - doxygen
+      - graphviz
+      - fakeroot
+
+matrix:
+  fast_finish: true
+
+script:
+  - ./scripts/travis-build
