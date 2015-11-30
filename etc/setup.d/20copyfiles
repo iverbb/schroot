@@ -75,6 +75,42 @@ copy_file()
     fi
 }
 
+# Resolve a relative path inside the chroot to its absolute path on the host
+# $1: base path of the chroot
+# $2: relative path to resolve
+resolve_path()
+{
+    base_path="$(realpath "$1")"
+    relative_destination="${2#/}"
+    absolute_destination="$base_path"
+
+    while [ -n "$relative_destination" ]; do
+        first_component="${relative_destination%%/*}"
+        relative_destination="${relative_destination#$first_component}"
+        relative_destination="${relative_destination#/}"
+
+        # If the first component is a link
+        if link="$(readlink "$absolute_destination/$first_component")"; then
+            # If the first component is a relative link
+            if [ "${link#/}" = "$link" ]; then
+                relative_destination="$link/$relative_destination"
+            else
+                absolute_destination="$base_path"
+                relative_destination="${link#/}/$relative_destination"
+            fi
+        else
+            absolute_destination="$(realpath "$absolute_destination/$first_component")"
+
+            # If the absolute destination gets out of the chroot
+            if [ "${absolute_destination#$base_path}" = "$absolute_destination" ]; then
+                absolute_destination="$base_path"
+            fi
+        fi
+    done
+
+    echo "$absolute_destination"
+}
+
 if [ $STAGE = "setup-start" ] || [ $STAGE = "setup-recover" ]; then
 
     if [ -n "$SETUP_COPYFILES" ]; then
@@ -84,7 +120,7 @@ if [ $STAGE = "setup-start" ] || [ $STAGE = "setup-recover" ]; then
                     continue
                 fi
                 if echo "$file" | grep -q '^/'; then
-                    copy_file "$file" "${CHROOT_PATH}$file"
+                    copy_file "$file" "$(resolve_path "${CHROOT_PATH}" "$file")"
                 else
                     warn "Not copying file with relative path: $file"
                 fi
