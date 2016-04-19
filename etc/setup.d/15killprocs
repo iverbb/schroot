@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Copyright © 2007       Kees Cook <kees@outflux.net>
 # Copyright © 2007-2013  Roger Leigh <rleigh@codelibre.net>
 #
@@ -43,39 +43,69 @@ do_kill_all()
         fatal "No path for finding stray processes: not reaping processes in chroot"
     fi
 
-    info "Killing processes run inside $1"
-    ls /proc | egrep '^[[:digit:]]+$' |
-    while read pid; do
+    if [ -z "$SCHROOT_KILL_WAIT_COUNTER" ]; then
+        SCHROOT_KILL_WAIT_COUNTER=5
+    fi
+
+    if [ -z "$SCHROOT_KILL_WAIT_DELAY" ]; then
+        SCHROOT_KILL_WAIT_DELAY=0.5
+    fi
+
+    chrootpath=$1
+
+    info "[$(date +"%T,%N")] Killing processes run inside $chrootpath"
+
+    # running processes will be added to array (key: pid | value: path to executable)
+    declare -a killproclist=()
+
+    # first, send SIGTERM to all running processes
+    for pid in $(ls /proc | egrep '^[[:digit:]]+$'); do
         # Check if process root are the same device/inode as chroot
         # root (for efficiency)
-        if [ /proc/"$pid"/root -ef "$1" ]; then
+        if [ /proc/"$pid"/root -ef "$chrootpath" ]; then
             # Check if process and chroot root are the same (may be
             # different even if device/inode match).
             root=$(readlink /proc/"$pid"/root || true)
-            if [ "$root" = "$1" ]; then
+
+            if [ "$root" = "$chrootpath" ]; then
                 exe=$(readlink /proc/"$pid"/exe || true)
-                info "Killing left-over pid $pid (${exe##$1})"
-                info "  Sending SIGTERM to pid $pid"
+
+                # appending those processes to array
+                killproclist[$pid]="${exe##$chrootpath}"
+
+                info  "Killing left-over pid $pid (${killproclist[$pid]})"
+                info  "  Sending SIGTERM to pid $pid"
 
                 kill_proc -TERM "$pid"
-
-                count=0
-                max=5
-                while [ -d /proc/"$pid" ]; do
-                    count=$(( $count + 1 ))
-                    info "  Waiting for pid $pid to shut down... ($count/$max)"
-                    sleep 1
-                # Wait for $max seconds for process to die before -9'ing it
-                    if [ "$count" -eq "$max" ]; then
-                        info "  Sending SIGKILL to pid $pid"
-                        kill_proc -KILL "$pid"
-                        sleep 1
-                        break
-                    fi
-                done
             fi
         fi
     done
+
+    # check for process termination in a loop, send SIGKILL afterwards
+    for pid in ${!killproclist[*]}; do
+        count=0
+        max=$SCHROOT_KILL_WAIT_COUNTER
+        while [ -d /proc/"$pid" ]; do
+            count=$(( $count + 1 ))
+            info "  Waiting for pid $pid to shut down... ($count/$max)"
+            sleep $SCHROOT_KILL_WAIT_DELAY
+            # Wait for $max seconds for process to die before -9'ing it
+            if [ "$count" -eq "$max" ]; then
+                info "  Sending SIGKILL to pid $pid"
+                kill_proc -KILL "$pid"
+                sleep $SCHROOT_KILL_WAIT_DELAY
+                break
+            fi
+        done
+
+        if [ ! -d /proc/"$pid" ]; then
+            info "Process '${killproclist[$pid]}' ($pid) terminated."
+        else
+            fatal "Process '${killproclist[$pid]}' ($pid) NOT terminated."
+        fi
+    done
+
+    info "[$(date +"%T,%N")] Finished killing processes run inside $chrootpath"
 }
 
 if [ $STAGE = "setup-recover" ] || [ $STAGE = "setup-stop" ]; then
