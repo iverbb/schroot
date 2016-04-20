@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Copyright © 2007       Kees Cook <kees@outflux.net>
 # Copyright © 2007-2013  Roger Leigh <rleigh@codelibre.net>
 #
@@ -43,20 +43,13 @@ do_kill_all()
         fatal "No path for finding stray processes: not reaping processes in chroot"
     fi
 
-    if [ -z "$SCHROOT_KILL_WAIT_COUNTER" ]; then
-        SCHROOT_KILL_WAIT_COUNTER=5
-    fi
-
-    if [ -z "$SCHROOT_KILL_WAIT_DELAY" ]; then
-        SCHROOT_KILL_WAIT_DELAY=0.5
-    fi
-
     chrootpath=$1
 
     info "[$(date +"%T,%N")] Killing processes run inside $chrootpath"
 
-    # running processes will be added to array (key: pid | value: path to executable)
-    declare -a killproclist=()
+    # pids of running procs will be added to a string 'killproclist' (bash with arrays not always available)
+    # format: (string) "pid==executable pid==executable [...]"
+    killproclist=""
 
     # first, send SIGTERM to all running processes
     for pid in $(ls /proc | egrep '^[[:digit:]]+$'); do
@@ -69,11 +62,12 @@ do_kill_all()
 
             if [ "$root" = "$chrootpath" ]; then
                 exe=$(readlink /proc/"$pid"/exe || true)
+                exe_short=${exe##$chrootpath}
 
-                # appending those processes to array
-                killproclist[$pid]="${exe##$chrootpath}"
+                # appending those processes to string
+                killproclist="$killproclist $pid==$exe_short"
 
-                info  "Killing left-over pid $pid (${killproclist[$pid]})"
+                info  "Killing left-over pid $pid (${exe_short})"
                 info  "  Sending SIGTERM to pid $pid"
 
                 kill_proc -TERM "$pid"
@@ -82,26 +76,29 @@ do_kill_all()
     done
 
     # check for process termination in a loop, send SIGKILL afterwards
-    for pid in ${!killproclist[*]}; do
+    # get elements out of string, separated by space.
+    for pidexe in $killproclist; do
+        pid=${pidexe%%==*} # delete longest match of ==* from back of $pidexe
+        exe=${pidexe##*==} # delete longest match of *== from front of $pidexe
         count=0
-        max=$SCHROOT_KILL_WAIT_COUNTER
+        max=10
         while [ -d /proc/"$pid" ]; do
             count=$(( $count + 1 ))
             info "  Waiting for pid $pid to shut down... ($count/$max)"
-            sleep $SCHROOT_KILL_WAIT_DELAY
-            # Wait for $max seconds for process to die before -9'ing it
+            sleep 0.5
+            # Wait for $max halfseconds for process to die before -9'ing it
             if [ "$count" -eq "$max" ]; then
                 info "  Sending SIGKILL to pid $pid"
                 kill_proc -KILL "$pid"
-                sleep $SCHROOT_KILL_WAIT_DELAY
+                sleep 0.5
                 break
             fi
         done
 
         if [ ! -d /proc/"$pid" ]; then
-            info "Process '${killproclist[$pid]}' ($pid) terminated."
+            info "Process '$exe' ($pid) terminated."
         else
-            fatal "Process '${killproclist[$pid]}' ($pid) NOT terminated."
+            fatal "Process '$exe' ($pid) NOT terminated."
         fi
     done
 
