@@ -35,7 +35,7 @@ set(profiles
     sbuild)
 
 set(arches
-    ${SBUILD_PLATFORM})
+    ${SCHROOT_PLATFORM})
 
 foreach(profile ${profiles})
   foreach(file ${files})
