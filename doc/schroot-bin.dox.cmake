@@ -656,8 +656,6 @@ WARN_LOGFILE           = schroot-bin.log
 
 INPUT                  = @PROJECT_SOURCE_DIR@/bin/schroot \
                          @PROJECT_SOURCE_DIR@/lib/bin-common \
-                         @PROJECT_SOURCE_DIR@/lib/dchroot-common \
-                         @PROJECT_SOURCE_DIR@/lib/schroot-common \
                          @PROJECT_SOURCE_DIR@/libexec/listmounts \
                          @PROJECT_SOURCE_DIR@/libexec/mount
 
