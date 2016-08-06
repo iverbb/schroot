@@ -24,8 +24,19 @@ set -e
 . "$SETUP_DATA_DIR/common-config"
 
 if [ "$VERBOSE" = "verbose" ]; then
-  CP_VERBOSE="--verbose"
+  CP_VERBOSE="-v"
 fi
+
+case "$(uname -s)" in
+    FreeBSD)
+        STATFMT=-f
+        MD5=md5
+        ;;
+    *)
+        STATFMT=-c
+        MD5=md5sum
+        ;;
+esac
 
 # Copy a file if the source and destination differ
 # $1: source file
@@ -38,20 +49,20 @@ copy_file()
 
         if [ -e "$2" ]; then
 
-            # Device and inode
-            da=$(/usr/bin/stat --format="%d %i" "$1")
+            # Get device and inode
+            da=$(stat "$STATFMT" "%d %i" "$1")
             # This one can fail since it might not exist yet
-            db=$(/usr/bin/stat --format="%d %i" "$2" 2>/dev/null || :)
+            db=$(stat "$STATFMT" "%d %i" "$2" 2>/dev/null || :)
 
             if [ "$da" = "$db" ]; then
                 COPY="false"
             elif [ -L "$2" ]; then
-                # Copy if destination is a symlink
-                :
+                # Copy if destination is a symlink, but snap link
+                rm "$2"
             elif [ -f "$1" ] && [ -f "$2" ]; then
                 # Content
-                ca=$(/usr/bin/md5sum "$1" | sed -e 's/\(^[0-9a-f][0-9a-f]*\).*$/\1/')
-                cb=$(/usr/bin/md5sum "$2" 2>/dev/null || :)
+                ca=$("$MD5" "$1" | sed -e 's/\(^[0-9a-f][0-9a-f]*\).*$/\1/')
+                cb=$("$MD5" "$2" 2>/dev/null || :)
                 cb=$(echo "$cb" | sed -e 's/\(^[0-9a-f][0-9a-f]*\).*$/\1/')
                 # Copy only if file contents differ
                 if [ "$ca" = "$cb" ]; then
@@ -63,10 +74,10 @@ copy_file()
         # Copy only if files are different
         if [ "$COPY" = "true" ]; then
             if [ -f "$1" ]; then
-                cp --remove-destination --preserve=all $CP_VERBOSE "$1" "$2"
+                cp -p $CP_VERBOSE "$1" "$2"
             else
                 # Copy non-regular file directly
-                cp --remove-destination -a $CP_VERBOSE "$1" "$2"
+                cp -a $CP_VERBOSE "$1" "$2"
             fi
         fi
 
