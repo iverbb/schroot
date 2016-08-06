@@ -40,6 +40,9 @@
 /* Define to 1 if you have the <mntent.h> header file and setmntent(). */
 #cmakedefine HAVE_MNTENT_FUNCTIONS 1
 
+/* Define to 1 if you have the getmntinfo(). */
+#cmakedefine HAVE_GETMNTINFO_FUNC 1
+
 /* Define if the GNU dcgettext() function is already present or preinstalled.
    */
 #cmakedefine HAVE_DCGETTEXT 1
