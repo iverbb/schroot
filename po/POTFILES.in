@@ -63,8 +63,6 @@ lib/schroot/run-parts.cc
 lib/schroot/session.cc
 lib/schroot/types.cc
 lib/schroot/util.cc
-lib/schroot-common/main.cc
-lib/schroot-common/options.cc
 libexec/listmounts/listmounts.cc
 libexec/listmounts/main.cc
 libexec/listmounts/options.cc
