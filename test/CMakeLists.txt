@@ -16,9 +16,6 @@
 #
 #####################################################################
 
-include_directories(${GTEST_INCLUDE_DIR}
-                    ${PROJECT_SOURCE_DIR}/bin)
-
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/schroot)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/schroot/chroot)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin-common)
