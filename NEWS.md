@@ -19,14 +19,30 @@ configuration.
    for a source chroot.
 
 3. The `lvm-snapshot` chroot type has been removed.  The data in
-   `lvm-snapshot` source chroots may continue to be used by switching
-   to the `block-device` chroot type.  This has been removed due to
-   long-term problems with `udev` causing race conditions when
-   creating and removing snapshots, as well as deficiencies in the
-   handling of space in the source and snapshot volumes.  The `file`
-   and `btrfs-snapshot` chroot types can provide similar snapshot
-   capabilities without the race conditions or space management
-   issues.
+   `lvm-snapshot` source chroots may continue to be used by mounting
+   the filesystem and using the `directory` chroot type.  This has
+   been removed due to long-term problems with `udev` causing race
+   conditions when creating and removing snapshots, as well as
+   deficiencies in the handling of space in the source and snapshot
+   volumes.  The `file` and `btrfs-snapshot` chroot types can provide
+   similar snapshot capabilities without the race conditions or space
+   management issues.
+
+4. The `loopback` chroot type has been removed.  This was rarely used
+   and poorly tested, and has been removed to reduce the maintenance
+   burden.
+
+5. The `block-device` chroot type has been removed, along with the
+   `mountable` chroot facet.  These existed primarily for use with the
+   `lvm-snapshot` and `loopback` chroot types, and are now no longer
+   needed.  Please mount these by hand and use the `directory` chroot
+   type as a replacement.
+
+6. FreeBSD is now a supported platform.  OpenPAM is now usable as a
+   replacement for Linux-PAM on FreeBSD, and Linux-specific behaviour
+   in the code, configuration and setup scripts has been replaced with
+   portable equivalents, or will conditionally use the appropriate
+   FreeBSD- or Linux-specific approach.
 
 ## 1.7.2
 
