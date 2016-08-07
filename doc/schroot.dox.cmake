@@ -1608,7 +1608,6 @@ INCLUDE_FILE_PATTERNS  =
 
 PREDEFINED             = SCHROOT_FEATURE_PAM \
                          SCHROOT_FEATURE_PERSONALITY \
-                         SCHROOT_FEATURE_BLOCKDEV \
                          SCHROOT_FEATURE_BTRFSSNAP \
                          SCHROOT_FEATURE_LVMSNAP \
                          SCHROOT_FEATURE_UNION \

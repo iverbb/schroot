@@ -99,7 +99,7 @@ otherwise \[oq]false\[cq].
 .TP
 CHROOT_TYPE
 The type of the chroot.  This is useful for restricting a setup task to
-particular types of chroot (e.g. only block devices or LVM snapshots).
+particular types of chroot (e.g. only files or directory types).
 .TP
 CHROOT_NAME
 The name of the chroot.  This is useful for restricting a setup task to a
@@ -165,24 +165,6 @@ Union filesystem overlay directory (writable).
 .TP
 CHROOT_UNION_UNDERLAY_DIRECTORY
 Union filesystem underlay directory (read-only).
-.SS Block device variables
-.TP
-CHROOT_DEVICE
-The device containing the chroot root filesystem.  This is usually, but not
-necessarily, the device which will be mounted.  For example, an LVM snapshot
-this will be the original logical volume.
-.SS LVM snapshot variables
-.TP
-CHROOT_LVM_SNAPSHOT_NAME
-Snapshot name to pass to
-.BR lvcreate (8).
-.TP
-CHROOT_LVM_SNAPSHOT_DEVICE
-The name of the LVM snapshot device.
-.TP
-CHROOT_LVM_SNAPSHOT_OPTIONS
-Options to pass to
-.BR lvcreate (8).
 .SS Custom variables
 .PP
 Custom keys set in \fIschroot.conf\fP will be uppercased and set in the
@@ -227,9 +209,6 @@ Unpack, clean up, and repack file-based chroots.
 .TP
 \f[BI]05fsunion\fP
 Create and remove union filesystems.
-.TP
-\f[BI]05lvm\fP
-Create and remove LVM snapshots.
 .TP
 \f[BI]10mount\fP
 Mount and unmount filesystems.

@@ -143,9 +143,6 @@
 /* Default regular expression used to filter user environment */
 #cmakedefine SCHROOT_DEFAULT_ENVIRONMENT_FILTER "${SCHROOT_DEFAULT_ENVIRONMENT_FILTER}"
 
-/* Set if the block-device chroot type is present */
-#cmakedefine SCHROOT_FEATURE_BLOCKDEV 1
-
 /* Set if the btrfs-snapshot chroot type is present */
 #cmakedefine SCHROOT_FEATURE_BTRFSSNAP 1
 
