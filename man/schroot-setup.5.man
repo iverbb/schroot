@@ -99,7 +99,7 @@ otherwise \[oq]false\[cq].
 .TP
 CHROOT_TYPE
 The type of the chroot.  This is useful for restricting a setup task to
-particular types of chroot (e.g. only files or directory types).
+particular types of chroot (e.g. only file or directory types).
 .TP
 CHROOT_NAME
 The name of the chroot.  This is useful for restricting a setup task to a
@@ -121,7 +121,7 @@ mounting.
 .TP
 CHROOT_LOCATION
 The location of the chroot inside the mount point.  This is to allow multiple
-chroots on a single filesystem, or to allow the chroot to be somewhere below
+chroots on a single filesystem, or to allow the chroot to be located below
 the base path.
 .TP
 CHROOT_PATH
