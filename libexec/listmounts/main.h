@@ -42,7 +42,8 @@ namespace bin
       /// Error codes.
       enum error_code
         {
-          FIND ///< Failed to find file.
+          FIND,      ///< Failed to find file.
+          GETMNTINFO ///< Failed to get mount information
         };
 
       /// Exception type.

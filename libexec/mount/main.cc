@@ -191,8 +191,12 @@ namespace bin
 
           if (!opts->dry_run)
             {
+              std::string mount_command = schroot::find_program_in_path("mount", "/sbin:/bin", "");
+              if (mount_command.empty())
+                mount_command = "/sbin/mount";
+
               schroot::string_list command;
-              command.push_back("/bin/mount");
+              command.push_back(mount_command);
               if (opts->verbose)
                 command.push_back("-v");
               command.push_back("-t");

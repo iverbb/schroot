@@ -16,19 +16,8 @@
 #
 #####################################################################
 
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/schroot)
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/schroot/chroot)
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin-common)
-
-set(srcdir ${PROJECT_SOURCE_DIR})
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/setup-test-data
-               ${CMAKE_CURRENT_BINARY_DIR}/setup-test-data)
-
 if (BUILD_TESTS)
-  add_test(NAME setup-test-data
-           WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/setup-test-data)
+  add_executable(option-action option-action.cc)
+  target_link_libraries(option-action bin-common testmain ${Intl_LIBRARIES})
+  add_test(bin-common/option-action option-action)
 endif (BUILD_TESTS)
-
-add_subdirectory(schroot)
-add_subdirectory(bin-common)

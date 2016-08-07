@@ -54,10 +54,6 @@ include("cmake/CompilerChecks.cmake")
 find_package(Threads REQUIRED)
 find_package(GTest)
 
-include(FindBoost)
-find_package(Boost REQUIRED
-             COMPONENTS filesystem system iostreams program_options regex)
-
 # HEADER CHECKS
 include(CheckIncludeFileCXX)
 
@@ -168,12 +164,20 @@ check_library_exists(pam openpam_ttyconv "" OPENPAM_FUNC)
 check_include_file_cxx (security/pam_misc.h LINUXPAM_MISC_HEADER)
 check_library_exists(pam misc_conv "" LINUXPAM_MISC_FUNC)
 set(PAM_DEFAULT OFF)
+set(PAM_TYPE None)
 if(PAM_HEADER AND PAM_FUNC)
   set(PAM_DEFAULT ON)
+  if(CMAKE_SYSTEM_NAME MATCHES "^(Linux|kFreeBSD|GNU)$")
+    set(PAM_TYPE Linux-PAM)
+  else()
+    set(PAM_TYPE OpenPAM)
+  endif()
 endif(PAM_HEADER AND PAM_FUNC)
 option(pam "Enable support for PAM authentication (requires libpam)" ${PAM_DEFAULT})
 set(BUILD_PAM ${pam})
 set(SCHROOT_FEATURE_PAM ${pam})
+set(pam-type "${PAM_TYPE}"
+    CACHE STRING "PAM implementation type (OpenPAM or Linux-PAM)")
 if(BUILD_PAM)
   set(PAM_LIBRARY pam)
 endif(BUILD_PAM)
@@ -228,7 +232,7 @@ endif (DOXYGEN_EXECUTABLE)
 option(doxygen "Enable doxygen documentation" ${DOXYGEN_DEFAULT})
 set(BUILD_DOXYGEN ${doxygen})
 
-# Linux and BSD fstab parsing
+# Linux and BSD fstab and mount parsing and querying
 check_include_file_cxx(fstab.h FSTAB_HEADER)
 check_function_exists(setfstab FSTAB_FUNC)
 if (FSTAB_HEADER AND FSTAB_FUNC)
@@ -242,6 +246,7 @@ else (FSTAB_HEADER AND FSTAB_FUNC)
     message(FATAL_ERROR "No fstab parser available for this platform.")
   endif (MNTENT_HEADER AND MNTENT_FUNC)
 endif (FSTAB_HEADER AND FSTAB_FUNC)
+check_function_exists(getmntinfo HAVE_GETMNTINFO_FUNC)
 
 # Namespace unshare feature
 # sched.h ==> UNSHARE_HEADER

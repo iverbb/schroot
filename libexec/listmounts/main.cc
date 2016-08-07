@@ -35,6 +35,14 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#ifdef HAVE_GETMNTINFO_FUNC
+// FreeBSD getmntinfo(3)
+#include <sys/param.h>
+#include <sys/ucred.h>
+#include <sys/mount.h>
+#include <sys/statvfs.h>
+#endif
+
 #include <boost/format.hpp>
 
 using std::endl;
@@ -50,7 +58,8 @@ namespace schroot
     error<bin::schroot_listmounts::main::error_code>::error_strings =
       {
         // TRANSLATORS: %1% = file
-        {bin::schroot_listmounts::main::FIND,  N_("Failed to find ‘%1%’")}
+        {bin::schroot_listmounts::main::FIND,       N_("Failed to find ‘%1%’")},
+        {bin::schroot_listmounts::main::GETMNTINFO, N_("Failed to get mount information")}
       };
 
 }
@@ -92,13 +101,33 @@ namespace bin
       }
 
       // Check mounts.
+      schroot::string_list mountlist;
+
+#ifdef HAVE_GETMNTINFO_FUNC
+      struct statfs *mntbuf;
+      int mntsize = getmntinfo(&mntbuf, MNT_NOWAIT);
+      if (mntsize == 0)
+          throw error(GETMNTINFO, strerror(errno));
+
+      for (int i = 0; i < mntsize; ++i)
+        {
+          std::string mount_dir(mntbuf[i].f_mntonname);
+          mountlist.push_back(mount_dir);
+        }
+#else // ! HAVE_GETMNTINFO_FUNC
       schroot::mntstream mounts("/proc/mounts");
       schroot::mntstream::mntentry entry;
-      schroot::string_list mountlist;
 
       while (mounts >> entry)
         {
-          std::string mount_dir(entry.directory);
+          mountlist.push_back(entry.directory);
+        }
+#endif // HAVE_GETMNTINFO_FUNC
+      for (schroot::string_list::const_reverse_iterator mount = mountlist.rbegin();
+           mount != mountlist.rend();
+           ++mount)
+        {
+          const std::string& mount_dir(*mount);
           if (to_find == "/" ||
               (mount_dir.find(to_find) == 0 &&
                (// Names are the same.
@@ -106,13 +135,8 @@ namespace bin
                 // Must have a following /, or not the same directory.
                 (mount_dir.size() > to_find.size() &&
                  mount_dir[to_find.size()] == '/'))))
-            mountlist.push_back(mount_dir);
+            std::cout << mount_dir << '\n';
         }
-
-      for (schroot::string_list::const_reverse_iterator mount = mountlist.rbegin();
-           mount != mountlist.rend();
-           ++mount)
-        std::cout << *mount << '\n';
       std::cout << std::flush;
     }
 

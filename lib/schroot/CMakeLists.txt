@@ -212,7 +212,7 @@ target_compile_features(libschroot
                         PUBLIC cxx_generalized_initializers)
 target_link_libraries(libschroot
                       PRIVATE
-                        ${CMAKE_THREAD_LIBS_INIT}
+                        Threads::Threads
                         ${PAM_LIBRARY}
                         ${REGEX_LIBRARY}
                         ${Boost_IOSTREAMS_LIBRARY_RELEASE}

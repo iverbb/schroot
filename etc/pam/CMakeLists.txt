@@ -16,8 +16,26 @@
 #
 #####################################################################
 
-set(pam_data schroot)
-set(pam_dir "/etc/pam.d")
+if(BUILD_PAM)
+  set(pam_data "${CMAKE_CURRENT_BINARY_DIR}/schroot")
+  set(pam_dir "/etc/pam.d")
 
-install(FILES ${pam_data}
+  if(PAM_TYPE STREQUAL "Linux-PAM")
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/schroot-debian"
+                   "${pam_data}"
+                   COPYONLY)
+  elseif(PAM_TYPE STREQUAL "OpenPAM")
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/schroot-freebsd"
+                   "${pam_data}"
+                   COPYONLY)
+    # For ports, we can use /usr/local/etc/pam.d.
+    if(CMAKE_INSTALL_PREFIX STREQUAL "/usr/local")
+      set(pam_dir "/usr/local/etc/pam.d")
+    endif()
+  else()
+    message(FATAL_ERROR "Invalid PAM type \"${PAM_TYPE}\"")
+  endif()
+
+  install(FILES ${pam_data}
         DESTINATION ${pam_dir})
+endif()

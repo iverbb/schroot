@@ -393,8 +393,8 @@ namespace schroot
       log_debug(DEBUG_NOTICE) << "pam_setcred OK" << endl;
 
       const char *authuser = 0;
-      const void *tmpcast = reinterpret_cast<const void *>(authuser);
-      pam_get_item(this->pamh, PAM_USER, &tmpcast);
+      const void **tmpcast = reinterpret_cast<const void **>(&authuser);
+      pam_get_item(this->pamh, PAM_USER, tmpcast);
       log_debug(DEBUG_INFO)
         << format("PAM authentication succeeded for user %1%") % authuser
         << endl;

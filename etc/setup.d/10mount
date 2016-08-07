@@ -62,19 +62,33 @@ do_umount_all()
         # Note that this does not prevent the problem when programs
         # other than schroot mount and unmount filesystems (since they
         # don't create the lock).
-        if [ -e /var/lock/schroot ]; then
-            if [ ! -d /var/lock/schroot ]; then
-                error "/var/lock/schroot is not a directory"
+        LOCKDIR=/var/run/schroot.lock
+        if [ -d /var/lock ]; then
+            LOCKDIR=/var/lock/schroot
+        fi
+        if [ -e "$LOCKDIR" ]; then
+            if [ ! -d "$LOCKDIR" ]; then
+                error "$LOCKDIR is not a directory"
                 exit 1
             fi
         else
-            mkdir -m 0700 /var/lock/schroot
+            mkdir -m 0700 "$LOCKDIR"
         fi
 
-        if [ "$(stat -c "%u %g %a" /var/lock/schroot)" != "0 0 700" ]; then
-            error "/var/lock/schroot is not owned by root:root, or lacks 0700 permissions"
-            exit 1
-        fi
+        case "$(uname -s)" in
+            FreeBSD)
+                if [ "$(stat -f "%u %g %p" $LOCKDIR)" != "0 0 40700" ]; then
+                    error "$LOCKDIR is not owned by root:root, or lacks 0700 permissions"
+                    exit 1
+                fi
+                ;;
+            *)
+                if [ "$(stat -c "%u %g %a" $LOCKDIR)" != "0 0 700" ]; then
+                    error "$LOCKDIR is not owned by root:root, or lacks 0700 permissions"
+                    exit 1
+                fi
+                ;;
+        esac
 
         ( flock 9
             mounts="$("$LIBEXEC_DIR/listmounts" -m "$1")"
@@ -85,7 +99,7 @@ do_umount_all()
                     umount "$mountloc" || exit 1
                 done || exit 1
             fi
-        ) 9>"/var/lock/schroot/umount"
+        ) 9>"$LOCKDIR/umount"
     else
         warn "Mount location $1 no longer exists; skipping unmount"
     fi
@@ -136,7 +150,7 @@ if [ "$CHROOT_TYPE" = "directory" ] \
     if [ $STAGE = "setup-start" ] || [ $STAGE = "setup-recover" ]; then
 
         case "$(uname -s)" in
-            *FreeBSD) :
+            *FreeBSD)
                 BINDOPT="-t nullfs"
                 ;;
             *):
@@ -166,11 +180,11 @@ if [ "$CHROOT_TYPE" = "directory" ] \
             fi
 
             case "$(uname -s)" in
-                *FreeBSD):
+                *FreeBSD)
                     LOOP_DEVICE="/dev/$(/sbin/mdconfig -a -t vnode -f "$CHROOT_FILE")"
                     CHROOT_MOUNT_DEVICE="$LOOP_DEVICE"
                     ;;
-                *):
+                *)
                     LOOP_DEVICE="$(/sbin/losetup -j "$CHROOT_FILE" | sed -e 's/:.*$//')"
                     if [ -z "$LOOP_DEVICE" ]; then
                         CHROOT_MOUNT_DEVICE="$CHROOT_FILE"

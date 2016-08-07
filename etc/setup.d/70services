@@ -45,7 +45,11 @@ elif [ $STAGE = "setup-stop" ]; then
 
     info "Stopping services"
 
-    SETUP_SERVICES=$(echo "$SETUP_SERVICES" | tr ',' '\n' | tac)
+    REVERSE_LINES='sort -r'
+    if [ -x /usr/bin/tac ]; then
+        REVERSE_LINES='tac'
+    fi
+    SETUP_SERVICES=$(echo "$SETUP_SERVICES" | tr ',' '\n' | $REVERSE_LINES)
 
     for service in $SETUP_SERVICES; do
         chroot "$CHROOT_PATH" /usr/sbin/invoke-rc.d --force "$service" stop || true
