@@ -21,7 +21,6 @@
 #include <schroot/chroot/facet/btrfs-snapshot.h>
 #include <schroot/chroot/facet/directory.h>
 #include <schroot/chroot/facet/factory.h>
-#include <schroot/chroot/facet/mountable.h>
 #include <schroot/chroot/facet/session-clonable.h>
 #include <schroot/chroot/facet/session.h>
 #include <schroot/chroot/facet/source-clonable.h>

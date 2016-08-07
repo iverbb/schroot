@@ -20,7 +20,6 @@
 
 #include <schroot/chroot/facet/factory.h>
 #include <schroot/chroot/facet/file.h>
-#include <schroot/chroot/facet/mountable.h>
 #include <schroot/chroot/facet/session-clonable.h>
 #include <schroot/chroot/facet/session.h>
 #include <schroot/chroot/facet/source-clonable.h>

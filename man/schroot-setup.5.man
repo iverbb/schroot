@@ -121,7 +121,8 @@ mounting.
 .TP
 CHROOT_LOCATION
 The location of the chroot inside the mount point.  This is to allow multiple
-chroots on a single filesystem.  Set for all mountable chroot types.
+chroots on a single filesystem, or to allow the chroot to be somewhere below
+the base path.
 .TP
 CHROOT_PATH
 The absolute path to the chroot.  This is typically CHROOT_MOUNT_LOCATION and
@@ -137,21 +138,6 @@ The file containing the chroot files.
 CHROOT_FILE_REPACK
 Set to \[oq]true\[cq] to repack the chroot into an archive file on ending a
 session, otherwise \[oq]false\[cq].
-.SS Mountable chroot variables
-.PP
-These variables are only set for directly mountable chroot types.
-.TP
-CHROOT_MOUNT_DEVICE
-The device to mount containing the chroot.
-mounting.
-.TP
-CHROOT_MOUNT_OPTIONS
-Options to pass to
-.BR mount (8).
-.TP
-CHROOT_LOCATION
-The location of the chroot inside the mount point.  This allows the existence
-of multiple chroots on a single filesystem.
 .SS Filesystem union variables
 .TP
 CHROOT_UNION_TYPE

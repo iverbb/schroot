@@ -30,7 +30,6 @@ lib/schroot/chroot/facet/facet.cc
 lib/schroot/chroot/facet/factory.cc
 lib/schroot/chroot/facet/file.cc
 lib/schroot/chroot/facet/fsunion.cc
-lib/schroot/chroot/facet/mountable.cc
 lib/schroot/chroot/facet/personality.cc
 lib/schroot/chroot/facet/plain.cc
 lib/schroot/chroot/facet/session-clonable.cc

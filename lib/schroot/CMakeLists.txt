@@ -137,7 +137,6 @@ set(public_chroot_facet_h_sources
     chroot/facet/facet.h
     chroot/facet/factory.h
     chroot/facet/file.h
-    chroot/facet/mountable.h
     chroot/facet/plain.h
     chroot/facet/session.h
     chroot/facet/session-clonable.h
@@ -159,7 +158,6 @@ set(public_chroot_facet_cc_sources
     chroot/facet/facet.cc
     chroot/facet/factory.cc
     chroot/facet/file.cc
-    chroot/facet/mountable.cc
     chroot/facet/plain.cc
     chroot/facet/session.cc
     chroot/facet/session-clonable.cc
