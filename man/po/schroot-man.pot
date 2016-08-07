@@ -6,8 +6,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: schroot 1.7.2-96-gaf9e555\n"
-"POT-Creation-Date: 2016-08-07 09:50+0000\n"
+"Project-Id-Version: schroot 1.7.2-91-g8c686b5\n"
+"POT-Creation-Date: 2016-08-07 10:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1196,7 +1196,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: schroot.1.man:531 schroot-setup.5.man:173 schroot.conf.5.man:596
+#: schroot.1.man:531 schroot-setup.5.man:159 schroot.conf.5.man:596
 #, no-wrap
 msgid "FILES"
 msgstr ""
@@ -1344,7 +1344,7 @@ msgid "Directory used for unpacking file chroots."
 msgstr ""
 
 #. type: SH
-#: schroot.1.man:576 schroot-setup.5.man:238 schroot.conf.5.man:636 schroot-script-config.5.man:73 schroot-faq.7.man:243
+#: schroot.1.man:576 schroot-setup.5.man:224 schroot.conf.5.man:636 schroot-script-config.5.man:73 schroot-faq.7.man:243
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -1657,27 +1657,27 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:121 schroot-setup.5.man:151
+#: schroot-setup.5.man:121
 #, no-wrap
 msgid "CHROOT_LOCATION"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:125
+#: schroot-setup.5.man:126
 msgid ""
 "The location of the chroot inside the mount point.  This is to allow "
-"multiple chroots on a single filesystem.  Set for all mountable chroot "
-"types."
+"multiple chroots on a single filesystem, or to allow the chroot to be "
+"somewhere below the base path."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:125
+#: schroot-setup.5.man:126
 #, no-wrap
 msgid "CHROOT_PATH"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:130
+#: schroot-setup.5.man:131
 msgid ""
 "The absolute path to the chroot.  This is typically CHROOT_MOUNT_LOCATION "
 "and CHROOT_LOCATION concatenated together.  This is the path which should be "
@@ -1685,170 +1685,130 @@ msgid ""
 msgstr ""
 
 #. type: SS
-#: schroot-setup.5.man:130
+#: schroot-setup.5.man:131
 #, no-wrap
 msgid "Plain and directory chroot variables"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:132
+#: schroot-setup.5.man:133
 msgid "These chroot types use only general variables."
 msgstr ""
 
 #. type: SS
-#: schroot-setup.5.man:132
+#: schroot-setup.5.man:133
 #, no-wrap
 msgid "File variables"
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:133
+#: schroot-setup.5.man:134
 #, no-wrap
 msgid "CHROOT_FILE"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:136
+#: schroot-setup.5.man:137
 msgid "The file containing the chroot files."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:136
+#: schroot-setup.5.man:137
 #, no-wrap
 msgid "CHROOT_FILE_REPACK"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:140
+#: schroot-setup.5.man:141
 msgid ""
 "Set to \\[oq]true\\[cq] to repack the chroot into an archive file on ending "
 "a session, otherwise \\[oq]false\\[cq]."
 msgstr ""
 
 #. type: SS
-#: schroot-setup.5.man:140
-#, no-wrap
-msgid "Mountable chroot variables"
-msgstr ""
-
-#. type: Plain text
-#: schroot-setup.5.man:143
-msgid "These variables are only set for directly mountable chroot types."
-msgstr ""
-
-#. type: TP
-#: schroot-setup.5.man:143
-#, no-wrap
-msgid "CHROOT_MOUNT_DEVICE"
-msgstr ""
-
-#. type: Plain text
-#: schroot-setup.5.man:147
-msgid "The device to mount containing the chroot.  mounting."
-msgstr ""
-
-#. type: TP
-#: schroot-setup.5.man:147
-#, no-wrap
-msgid "CHROOT_MOUNT_OPTIONS"
-msgstr ""
-
-#. type: Plain text
-#: schroot-setup.5.man:151
-msgid "Options to pass to B<mount>(8)."
-msgstr ""
-
-#. type: Plain text
-#: schroot-setup.5.man:155
-msgid ""
-"The location of the chroot inside the mount point.  This allows the "
-"existence of multiple chroots on a single filesystem."
-msgstr ""
-
-#. type: SS
-#: schroot-setup.5.man:155
+#: schroot-setup.5.man:141
 #, no-wrap
 msgid "Filesystem union variables"
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:156
+#: schroot-setup.5.man:142
 #, no-wrap
 msgid "CHROOT_UNION_TYPE"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:159
+#: schroot-setup.5.man:145
 msgid "Union filesystem type."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:159
+#: schroot-setup.5.man:145
 #, no-wrap
 msgid "CHROOT_UNION_MOUNT_OPTIONS"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:162
+#: schroot-setup.5.man:148
 msgid "Union filesystem mount options."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:162
+#: schroot-setup.5.man:148
 #, no-wrap
 msgid "CHROOT_UNION_OVERLAY_DIRECTORY"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:165
+#: schroot-setup.5.man:151
 msgid "Union filesystem overlay directory (writable)."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:165
+#: schroot-setup.5.man:151
 #, no-wrap
 msgid "CHROOT_UNION_UNDERLAY_DIRECTORY"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:168
+#: schroot-setup.5.man:154
 msgid "Union filesystem underlay directory (read-only)."
 msgstr ""
 
 #. type: SS
-#: schroot-setup.5.man:168
+#: schroot-setup.5.man:154
 #, no-wrap
 msgid "Custom variables"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:173
+#: schroot-setup.5.man:159
 msgid ""
 "Custom keys set in I<schroot.conf> will be uppercased and set in the "
 "environment as described in B<schroot.conf>(5)."
 msgstr ""
 
 #. type: SS
-#: schroot-setup.5.man:174 schroot.conf.5.man:607
+#: schroot-setup.5.man:160 schroot.conf.5.man:607
 #, no-wrap
 msgid "Setup script configuration"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:177 schroot.conf.5.man:610
+#: schroot-setup.5.man:163 schroot.conf.5.man:610
 msgid ""
 "The directory \\f[BI]\\*[SCHROOT_SYSCONF_DIR]/default\\fR contains the "
 "default settings used by setup scripts."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:177 schroot.conf.5.man:610
+#: schroot-setup.5.man:163 schroot.conf.5.man:610
 #, no-wrap
 msgid "\\f[BI]config\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:185 schroot.conf.5.man:618
+#: schroot-setup.5.man:171 schroot.conf.5.man:618
 msgid ""
 "Main configuration file read by setup scripts.  The format of this file is "
 "described in B<schroot-script-config>(5).  This is the default value for the "
@@ -1858,26 +1818,26 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:185 schroot.conf.5.man:618
+#: schroot-setup.5.man:171 schroot.conf.5.man:618
 #, no-wrap
 msgid "\\f[BI]copyfiles\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:189 schroot.conf.5.man:622
+#: schroot-setup.5.man:175 schroot.conf.5.man:622
 msgid ""
 "A list of files to copy into the chroot from the host system.  Note that "
 "this was formerly named I<\\*[SCHROOT_SYSCONF_DIR]/copyfiles-defaults>."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:189 schroot.conf.5.man:622
+#: schroot-setup.5.man:175 schroot.conf.5.man:622
 #, no-wrap
 msgid "\\f[BI]fstab\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:196 schroot.conf.5.man:629
+#: schroot-setup.5.man:182 schroot.conf.5.man:629
 msgid ""
 "A file in the format decribed in B<fstab>(5), used to mount filesystems "
 "inside the chroot.  The mount location is relative to the root of the "
@@ -1886,13 +1846,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:196 schroot.conf.5.man:629
+#: schroot-setup.5.man:182 schroot.conf.5.man:629
 #, no-wrap
 msgid "\\f[BI]nssdatabases\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:201 schroot.conf.5.man:634
+#: schroot-setup.5.man:187 schroot.conf.5.man:634
 msgid ""
 "System databases (as described in I</etc/nsswitch.conf> on GNU/Linux "
 "systems) to copy into the chroot from the host.  Note that this was formerly "
@@ -1900,70 +1860,70 @@ msgid ""
 msgstr ""
 
 #. type: SS
-#: schroot-setup.5.man:201
+#: schroot-setup.5.man:187
 #, no-wrap
 msgid "Setup scripts"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:203
+#: schroot-setup.5.man:189
 msgid ""
 "The directory \\f[BI]\\*[SCHROOT_CONF_SETUP_D]\\fR contains the chroot setup "
 "scripts."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:203
+#: schroot-setup.5.man:189
 #, no-wrap
 msgid "\\f[BI]00check\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:206
+#: schroot-setup.5.man:192
 msgid "Print debugging diagnostics and perform basic sanity checking."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:206
+#: schroot-setup.5.man:192
 #, no-wrap
 msgid "\\f[BI]05file\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:209
+#: schroot-setup.5.man:195
 msgid "Unpack, clean up, and repack file-based chroots."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:209
+#: schroot-setup.5.man:195
 #, no-wrap
 msgid "\\f[BI]05fsunion\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:212
+#: schroot-setup.5.man:198
 msgid "Create and remove union filesystems."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:212
+#: schroot-setup.5.man:198
 #, no-wrap
 msgid "\\f[BI]10mount\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:215
+#: schroot-setup.5.man:201
 msgid "Mount and unmount filesystems."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:215
+#: schroot-setup.5.man:201
 #, no-wrap
 msgid "\\f[BI]15binfmt\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:220
+#: schroot-setup.5.man:206
 msgid ""
 "Sets up the QEMU user emulator using binfmt-support.  This permits a chroot "
 "for a different CPU architecture to be used transparently, providing an "
@@ -1971,59 +1931,59 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:220
+#: schroot-setup.5.man:206
 #, no-wrap
 msgid "\\f[BI]15killprocs\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:224
+#: schroot-setup.5.man:210
 msgid ""
 "Kill processes still running inside the chroot when ending a session, which "
 "would prevent unmounting of filesystems and cleanup of any other resources."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:224
+#: schroot-setup.5.man:210
 #, no-wrap
 msgid "\\f[BI]20copyfiles\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:228
+#: schroot-setup.5.man:214
 msgid ""
 "Copy files from the host system into the chroot.  Configure networking by "
 "copying I<hosts> and I<resolv.conf>, for example."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:228
+#: schroot-setup.5.man:214
 #, no-wrap
 msgid "\\f[BI]20nssdatabases\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:232
+#: schroot-setup.5.man:218
 msgid ""
 "Configure system databases by copying passwd, shadow, group etc. into the "
 "chroot."
 msgstr ""
 
 #. type: TP
-#: schroot-setup.5.man:232
+#: schroot-setup.5.man:218
 #, no-wrap
 msgid "\\f[BI]50chrootname\\fR"
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:236
+#: schroot-setup.5.man:222
 msgid ""
 "Set the chroot name (I</etc/debian_chroot>) in the chroot.  This may be used "
 "by the shell prompt to display the current chroot."
 msgstr ""
 
 #. type: Plain text
-#: schroot-setup.5.man:243
+#: schroot-setup.5.man:229
 msgid ""
 "B<schroot>(1), B<fstab>(5), B<schroot.conf>(5), B<schroot-script-config>(5), "
 "B<run-parts>(8)."
