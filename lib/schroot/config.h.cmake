@@ -39,9 +39,6 @@
 /* Set if the btrfs-snapshot chroot type is present */
 #cmakedefine SCHROOT_FEATURE_BTRFSSNAP 1
 
-/* Set if the loopback chroot type is present */
-#cmakedefine SCHROOT_FEATURE_LOOPBACK 1
-
 /* Set if the union filesystem type is present */
 #cmakedefine SCHROOT_FEATURE_UNION 1
 

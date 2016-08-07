@@ -206,16 +206,6 @@ if(btrfs-snapshot AND NOT block-device)
   message(FATAL_ERROR "block-device must be enabled when btrfs-snapshot is enabled")
 endif(btrfs-snapshot AND NOT block-device)
 
-# Loopback mount feature
-find_program(LOSETUP_EXECUTABLE losetup PATHS /sbin /usr/sbin /usr/local/sbin)
-set(LOOPBACK_DEFAULT OFF)
-if (LOSETUP_EXECUTABLE)
-  set (LOOPBACK_DEFAULT ON)
-endif (LOSETUP_EXECUTABLE)
-option(loopback "Enable support for loopback mounts" ${LOOPBACK_DEFAULT})
-set(BUILD_LOOPBACK ${loopback})
-set(SCHROOT_FEATURE_LOOPBACK ${loopback})
-
 # Filesystem union mount feature
 set(UNION_DEFAULT ON)
 option(union "Enable support for union mounts" ${UNION_DEFAULT})

@@ -98,7 +98,6 @@ configurable options.  The following basic options are supported:
 - `debug=(ON|OFF)` Enable debugging messages
 - `default_environment_filter=REGEX` Default environment filter
 - `doxygen=(ON|OFF)` Enable doxygen documentation
-- `loopback=(ON|OFF)` Enable support for loopback mounts
 - `nls=(ON|OFF)` Enable national language support (requires gettext)
 - `pam=(ON|OFF)` Enable support for PAM authentication (requires libpam)
 - `personality=(ON|OFF)` Enable personality support (Linux only)

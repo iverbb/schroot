@@ -36,8 +36,7 @@ namespace schroot
        * mounted on demand.
        *
        * This facet is not restricted to block devices and can also be
-       * used for network filesystems, loopback files and other
-       * mountable objects.
+       * used for network filesystems and other mountable objects.
        */
       class mountable : public facet
       {

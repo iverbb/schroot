@@ -64,13 +64,6 @@ if(BUILD_BTRFSSNAP)
       chroot/facet/btrfs-snapshot.cc)
 endif(BUILD_BTRFSSNAP)
 
-if(BUILD_LOOPBACK)
-  set(public_loopback_h_sources
-      chroot/facet/loopback.h)
-  set(public_loopback_cc_sources
-      chroot/facet/loopback.cc)
-endif(BUILD_LOOPBACK)
-
 if(BUILD_UNION)
   set(public_union_h_sources
       chroot/facet/fsunion.h)
@@ -168,7 +161,6 @@ set(public_chroot_facet_h_sources
     ${public_blockdev_base_h_sources}
     ${public_blockdev_h_sources}
     ${public_btrfssnap_h_sources}
-    ${public_loopback_h_sources}
     ${public_personality_facet_h_sources}
     ${public_union_h_sources}
     ${public_unshare_h_sources})
@@ -193,7 +185,6 @@ set(public_chroot_facet_cc_sources
     ${public_blockdev_base_cc_sources}
     ${public_blockdev_cc_sources}
     ${public_btrfssnap_cc_sources}
-    ${public_loopback_cc_sources}
     ${public_personality_facet_cc_sources}
     ${public_union_cc_sources}
     ${public_unshare_cc_sources})

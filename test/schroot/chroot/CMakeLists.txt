@@ -24,11 +24,6 @@ if(BUILD_BLOCKDEV)
       block-device.cc)
 endif(BUILD_BLOCKDEV)
 
-if(BUILD_LOOPBACK)
-  set(loopback_sources
-      loopback.cc)
-endif(BUILD_LOOPBACK)
-
 if(BUILD_BTRFSSNAP)
   set(btrfssnap_sources
       btrfs-snapshot.cc)
