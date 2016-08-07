@@ -22,8 +22,6 @@ lib/schroot/auth/pam-message.cc
 lib/schroot/auth/pam.cc
 lib/schroot/chroot/chroot.cc
 lib/schroot/chroot/config.cc
-lib/schroot/chroot/facet/block-device-base.cc
-lib/schroot/chroot/facet/block-device.cc
 lib/schroot/chroot/facet/btrfs-snapshot.cc
 lib/schroot/chroot/facet/custom.cc
 lib/schroot/chroot/facet/directory-base.cc
@@ -32,9 +30,6 @@ lib/schroot/chroot/facet/facet.cc
 lib/schroot/chroot/facet/factory.cc
 lib/schroot/chroot/facet/file.cc
 lib/schroot/chroot/facet/fsunion.cc
-lib/schroot/chroot/facet/loopback.cc
-lib/schroot/chroot/facet/lvm-snapshot.cc
-lib/schroot/chroot/facet/mountable.cc
 lib/schroot/chroot/facet/personality.cc
 lib/schroot/chroot/facet/plain.cc
 lib/schroot/chroot/facet/session-clonable.cc

@@ -54,13 +54,8 @@ namespace schroot
   error<chroot::chroot::error_code>::error_strings =
     {
       {chroot::chroot::CHROOT_CREATE,     N_("Chroot creation failed")},
-      {chroot::chroot::CHROOT_DEVICE,     N_("Device name not set")},
       // TRANSLATORS: %1% = chroot type name
       {chroot::chroot::CHROOT_TYPE,       N_("Unknown chroot type ‘%1%’")},
-      {chroot::chroot::DEVICE_ABS,        N_("Device must have an absolute path")},
-      {chroot::chroot::DEVICE_LOCK,       N_("Failed to lock device")},
-      {chroot::chroot::DEVICE_NOTBLOCK,   N_("File is not a block device")},
-      {chroot::chroot::DEVICE_UNLOCK,     N_("Failed to unlock device")},
       {chroot::chroot::DIRECTORY_ABS,     N_("Directory must have an absolute path")},
       {chroot::chroot::FACET_ABSENT,      N_("Attempt to use facet ‘%1%’ which is not present")},
       {chroot::chroot::FACET_INVALID,     N_("Attempt to add object ‘%1%’ which is not a facet")},

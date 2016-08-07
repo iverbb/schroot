@@ -99,7 +99,7 @@ otherwise \[oq]false\[cq].
 .TP
 CHROOT_TYPE
 The type of the chroot.  This is useful for restricting a setup task to
-particular types of chroot (e.g. only block devices or LVM snapshots).
+particular types of chroot (e.g. only file or directory types).
 .TP
 CHROOT_NAME
 The name of the chroot.  This is useful for restricting a setup task to a
@@ -121,7 +121,8 @@ mounting.
 .TP
 CHROOT_LOCATION
 The location of the chroot inside the mount point.  This is to allow multiple
-chroots on a single filesystem.  Set for all mountable chroot types.
+chroots on a single filesystem, or to allow the chroot to be located below
+the base path.
 .TP
 CHROOT_PATH
 The absolute path to the chroot.  This is typically CHROOT_MOUNT_LOCATION and
@@ -137,21 +138,6 @@ The file containing the chroot files.
 CHROOT_FILE_REPACK
 Set to \[oq]true\[cq] to repack the chroot into an archive file on ending a
 session, otherwise \[oq]false\[cq].
-.SS Mountable chroot variables
-.PP
-These variables are only set for directly mountable chroot types.
-.TP
-CHROOT_MOUNT_DEVICE
-The device to mount containing the chroot.
-mounting.
-.TP
-CHROOT_MOUNT_OPTIONS
-Options to pass to
-.BR mount (8).
-.TP
-CHROOT_LOCATION
-The location of the chroot inside the mount point.  This allows the existence
-of multiple chroots on a single filesystem.
 .SS Filesystem union variables
 .TP
 CHROOT_UNION_TYPE
@@ -165,24 +151,6 @@ Union filesystem overlay directory (writable).
 .TP
 CHROOT_UNION_UNDERLAY_DIRECTORY
 Union filesystem underlay directory (read-only).
-.SS Block device variables
-.TP
-CHROOT_DEVICE
-The device containing the chroot root filesystem.  This is usually, but not
-necessarily, the device which will be mounted.  For example, an LVM snapshot
-this will be the original logical volume.
-.SS LVM snapshot variables
-.TP
-CHROOT_LVM_SNAPSHOT_NAME
-Snapshot name to pass to
-.BR lvcreate (8).
-.TP
-CHROOT_LVM_SNAPSHOT_DEVICE
-The name of the LVM snapshot device.
-.TP
-CHROOT_LVM_SNAPSHOT_OPTIONS
-Options to pass to
-.BR lvcreate (8).
 .SS Custom variables
 .PP
 Custom keys set in \fIschroot.conf\fP will be uppercased and set in the
@@ -227,9 +195,6 @@ Unpack, clean up, and repack file-based chroots.
 .TP
 \f[BI]05fsunion\fP
 Create and remove union filesystems.
-.TP
-\f[BI]05lvm\fP
-Create and remove LVM snapshots.
 .TP
 \f[BI]10mount\fP
 Mount and unmount filesystems.

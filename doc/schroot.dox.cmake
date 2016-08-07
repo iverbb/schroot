@@ -1608,10 +1608,8 @@ INCLUDE_FILE_PATTERNS  =
 
 PREDEFINED             = SCHROOT_FEATURE_PAM \
                          SCHROOT_FEATURE_PERSONALITY \
-                         SCHROOT_FEATURE_BLOCKDEV \
                          SCHROOT_FEATURE_BTRFSSNAP \
                          SCHROOT_FEATURE_LVMSNAP \
-                         SCHROOT_FEATURE_LOOPBACK \
                          SCHROOT_FEATURE_UNION \
                          HAVE_BOOST_FORMAT_HPP \
                          HAVE_BOOST_PROGRAM_OPTIONS_HPP \

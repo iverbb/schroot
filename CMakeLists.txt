@@ -182,8 +182,6 @@ if(BUILD_PAM)
   set(PAM_LIBRARY pam)
 endif(BUILD_PAM)
 
-# Set early, so it can be overridden by block-device
-set(BLOCKDEV_DEFAULT ON)
 
 # Btrfs snapshot mount feature
 find_program(BTRFS_EXECUTABLE btrfs PATHS /sbin /usr/sbin /usr/local/sbin)
@@ -194,27 +192,6 @@ endif (BTRFS_EXECUTABLE)
 option(btrfs-snapshot "Enable support for btrfs snapshots (requires Btrfs)" ${BTRFSSNAP_DEFAULT})
 set(BUILD_BTRFSSNAP ${btrfs-snapshot})
 set(SCHROOT_FEATURE_BTRFSSNAP ${btrfs-snapshot})
-if (btrfs-snapshot)
-  set(BLOCKDEV_DEFAULT ON)
-endif(btrfs-snapshot)
-
-# Block device mount feature
-option(block-device "Enable support for block devices" ${BLOCKDEV_DEFAULT})
-set(BUILD_BLOCKDEV ${block-device})
-set(SCHROOT_FEATURE_BLOCKDEV ${block-device})
-if(btrfs-snapshot AND NOT block-device)
-  message(FATAL_ERROR "block-device must be enabled when btrfs-snapshot is enabled")
-endif(btrfs-snapshot AND NOT block-device)
-
-# Loopback mount feature
-find_program(LOSETUP_EXECUTABLE losetup PATHS /sbin /usr/sbin /usr/local/sbin)
-set(LOOPBACK_DEFAULT OFF)
-if (LOSETUP_EXECUTABLE)
-  set (LOOPBACK_DEFAULT ON)
-endif (LOSETUP_EXECUTABLE)
-option(loopback "Enable support for loopback mounts" ${LOOPBACK_DEFAULT})
-set(BUILD_LOOPBACK ${loopback})
-set(SCHROOT_FEATURE_LOOPBACK ${loopback})
 
 # Filesystem union mount feature
 set(UNION_DEFAULT ON)

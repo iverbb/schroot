@@ -19,16 +19,6 @@
 include_directories(${GTEST_INCLUDE_DIR}
                     ${PROJECT_SOURCE_DIR}/bin)
 
-if(BUILD_BLOCKDEV)
-  set(blockdev_sources
-      block-device.cc)
-endif(BUILD_BLOCKDEV)
-
-if(BUILD_LOOPBACK)
-  set(loopback_sources
-      loopback.cc)
-endif(BUILD_LOOPBACK)
-
 if(BUILD_BTRFSSNAP)
   set(btrfssnap_sources
       btrfs-snapshot.cc)

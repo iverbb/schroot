@@ -72,12 +72,7 @@ namespace schroot
       enum error_code
         {
           CHROOT_CREATE,    ///< Chroot creation failed.
-          CHROOT_DEVICE,    ///< Chroot device name not set.
           CHROOT_TYPE,      ///< Unknown chroot type.
-          DEVICE_ABS,       ///< Device must have an absolute path.
-          DEVICE_LOCK,      ///< Failed to lock device.
-          DEVICE_NOTBLOCK,  ///< File is not a block device.
-          DEVICE_UNLOCK,    ///< Failed to unlock device.
           DIRECTORY_ABS,    ///< Directory must have an absolute path.
           FACET_ABSENT,     ///< Attempt to use facet which is not present.
           FACET_INVALID,    ///< Attempt to add object which is not a facet.

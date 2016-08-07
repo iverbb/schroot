@@ -46,30 +46,12 @@ if(BUILD_PERSONALITY)
       personality.cc)
 endif(BUILD_PERSONALITY)
 
-if(BUILD_BLOCKDEV)
-  set(public_blockdev_base_h_sources
-      chroot/facet/block-device-base.h)
-  set(public_blockdev_base_cc_sources
-      chroot/facet/block-device-base.cc)
-  set(public_blockdev_h_sources
-      chroot/facet/block-device.h)
-  set(public_blockdev_cc_sources
-      chroot/facet/block-device.cc)
-endif(BUILD_BLOCKDEV)
-
 if(BUILD_BTRFSSNAP)
   set(public_btrfssnap_h_sources
       chroot/facet/btrfs-snapshot.h)
   set(public_btrfssnap_cc_sources
       chroot/facet/btrfs-snapshot.cc)
 endif(BUILD_BTRFSSNAP)
-
-if(BUILD_LOOPBACK)
-  set(public_loopback_h_sources
-      chroot/facet/loopback.h)
-  set(public_loopback_cc_sources
-      chroot/facet/loopback.cc)
-endif(BUILD_LOOPBACK)
 
 if(BUILD_UNION)
   set(public_union_h_sources
@@ -155,7 +137,6 @@ set(public_chroot_facet_h_sources
     chroot/facet/facet.h
     chroot/facet/factory.h
     chroot/facet/file.h
-    chroot/facet/mountable.h
     chroot/facet/plain.h
     chroot/facet/session.h
     chroot/facet/session-clonable.h
@@ -165,10 +146,7 @@ set(public_chroot_facet_h_sources
     chroot/facet/source-setup.h
     chroot/facet/storage.h
     chroot/facet/userdata.h
-    ${public_blockdev_base_h_sources}
-    ${public_blockdev_h_sources}
     ${public_btrfssnap_h_sources}
-    ${public_loopback_h_sources}
     ${public_personality_facet_h_sources}
     ${public_union_h_sources}
     ${public_unshare_h_sources})
@@ -180,7 +158,6 @@ set(public_chroot_facet_cc_sources
     chroot/facet/facet.cc
     chroot/facet/factory.cc
     chroot/facet/file.cc
-    chroot/facet/mountable.cc
     chroot/facet/plain.cc
     chroot/facet/session.cc
     chroot/facet/session-clonable.cc
@@ -190,10 +167,7 @@ set(public_chroot_facet_cc_sources
     chroot/facet/source-setup.cc
     chroot/facet/storage.cc
     chroot/facet/userdata.cc
-    ${public_blockdev_base_cc_sources}
-    ${public_blockdev_cc_sources}
     ${public_btrfssnap_cc_sources}
-    ${public_loopback_cc_sources}
     ${public_personality_facet_cc_sources}
     ${public_union_cc_sources}
     ${public_unshare_cc_sources})

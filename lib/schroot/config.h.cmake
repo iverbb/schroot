@@ -33,14 +33,8 @@
 /* Set if personality support is present */
 #cmakedefine SCHROOT_FEATURE_PERSONALITY 1
 
-/* Set if the block-device chroot type is present */
-#cmakedefine SCHROOT_FEATURE_BLOCKDEV 1
-
 /* Set if the btrfs-snapshot chroot type is present */
 #cmakedefine SCHROOT_FEATURE_BTRFSSNAP 1
-
-/* Set if the loopback chroot type is present */
-#cmakedefine SCHROOT_FEATURE_LOOPBACK 1
 
 /* Set if the union filesystem type is present */
 #cmakedefine SCHROOT_FEATURE_UNION 1
