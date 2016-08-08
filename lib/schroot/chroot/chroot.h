@@ -383,14 +383,6 @@ namespace schroot
       void
       set_original (bool original);
 
-      /**
-       * Check if chroot setup scripts will be run.
-       *
-       * @returns true if setup scripts will be run, otherwise false.
-       */
-      bool
-      get_run_setup_scripts () const;
-
     public:
       /**
        * Get the script configuration file for the chroot.  This is a

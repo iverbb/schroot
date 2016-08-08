@@ -23,12 +23,6 @@ set -e
 . "$SETUP_DATA_DIR/common-functions"
 . "$SETUP_DATA_DIR/common-config"
 
-# Plain chroots should not be able to use scripts, but check anyway to
-# be safe.
-if [ $CHROOT_TYPE = "plain" ]; then
-    fatal "plain chroots may not run setup scripts; use directory instead"
-fi
-
 # Skip if run at inappropriate point.
 if [ $STAGE = "setup-start" ] || [ $STAGE = "setup-recover" ] && [ "$(basename "$0")" = "99check" ]; then
     exit 0;

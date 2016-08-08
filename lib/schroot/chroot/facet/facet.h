@@ -23,7 +23,6 @@
 #include <schroot/format-detail.h>
 #include <schroot/keyfile.h>
 #include <schroot/types.h>
-#include <schroot/chroot/chroot.h>
 
 #include <string>
 

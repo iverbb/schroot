@@ -57,7 +57,9 @@ namespace schroot
       }
 
       directory::directory ():
-        directory_base()
+        facet(),
+        storage(),
+        directory_()
       {
       }
 
@@ -66,13 +68,17 @@ namespace schroot
       }
 
       directory::directory (const directory& rhs):
-        directory_base(rhs)
+        facet(rhs),
+        storage(rhs),
+        directory_(rhs.directory_)
       {
       }
 
 #ifdef SCHROOT_FEATURE_BTRFSSNAP
       directory::directory (const btrfs_snapshot& rhs):
-        directory_base()
+        facet(rhs),
+        storage(rhs),
+        directory_(rhs.directory_)
       {
         set_directory(rhs.get_source_subvolume());
       }
@@ -82,7 +88,7 @@ namespace schroot
       directory::set_chroot (chroot& chroot,
                              bool    copy)
       {
-        directory_base::set_chroot(chroot, copy);
+        facet::set_chroot(chroot, copy);
 
         if (!copy && !owner->get_facet<session_clonable>())
           owner->add_facet(session_clonable::create());
@@ -119,10 +125,31 @@ namespace schroot
         return ptr(new directory(*this));
       }
 
+      std::string const&
+      directory::get_directory () const
+      {
+        return this->directory_;
+      }
+
+      void
+      directory::set_directory (const std::string& directory)
+      {
+        if (!is_absname(directory))
+          throw chroot::error(directory, chroot::DIRECTORY_ABS);
+
+        this->directory_ = directory;
+      }
+
       std::string
       directory::get_path () const
       {
         return owner->get_mount_location();
+      }
+
+      void
+      directory::setup_env (environment& env) const
+      {
+        env.add("CHROOT_DIRECTORY", get_directory());
       }
 
       void
@@ -138,6 +165,58 @@ namespace schroot
             owner->get_facet_strict<session>()->setup_session_info(start);
           }
       }
+
+      void
+      directory::get_details (format_detail& detail) const
+      {
+        detail.add(_("Directory"), get_directory());
+      }
+
+      void
+      directory::get_used_keys (string_list& used_keys) const
+      {
+        used_keys.push_back("directory");
+        used_keys.push_back("location");
+      }
+
+      void
+      directory::get_keyfile (keyfile& keyfile) const
+      {
+        keyfile::set_object_value(*this, &directory::get_directory,
+                                  keyfile, owner->get_name(), "directory");
+      }
+
+      void
+      directory::set_keyfile (const keyfile& keyfile)
+      {
+        // "directory" should be required, but we also accept "location" as
+        // an alternative (but deprecated) variant.  Therefore, ensure by
+        // hand that one of them is defined, but not both.
+
+        bool directory_key = keyfile.has_key(owner->get_name(), "directory");
+        bool location_key = keyfile.has_key(owner->get_name(), "location");
+
+        keyfile::priority directory_priority = keyfile::PRIORITY_OPTIONAL;
+        keyfile::priority location_priority = keyfile::PRIORITY_OBSOLETE;
+
+        if (!directory_key && !location_key)
+          throw keyfile::error(owner->get_name(), keyfile::MISSING_KEY_NL, "directory");
+
+        // Using both keys is not allowed (which one is the correct one?),
+        // so force an exception to be thrown when reading the old location
+        // key.
+        if (directory_key && location_key)
+          location_priority = keyfile::PRIORITY_DISALLOWED;
+
+        keyfile::get_object_value(*this, &directory::set_directory,
+                                  keyfile, owner->get_name(), "directory",
+                                  directory_priority);
+
+        keyfile::get_object_value(*this, &directory::set_directory,
+                                  keyfile, owner->get_name(), "location",
+                                  location_priority);
+      }
+
 
     }
   }

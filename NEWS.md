@@ -8,6 +8,23 @@ configuration.
 
 ## 1.7.3
 
+The major theme in this release is simplification and removal of
+lesser used and poorly tested features.  The `plain`, `loopback`,
+`lvm-snapshot` and `block-device` chroot types have been removed.  The
+reason for this is not to remove features just for the sake of it.
+Every feature has a maintenance cost, both in maintaining the code and
+in testing it.  Given the current constraints upon schroot
+maintenance, these features weren't being tested sufficiently to
+guarantee that they were functional, bug-free and secure.  Quite a few
+of these were added "because we could" and "because they were neat",
+which was fine, but they are often not that useful in practice,
+particularly when other features are more widely used and are better
+choices.  Other features were once more useful than they are today,
+having been superseded by better equivalents.  While I apologise for
+any disruption this causes, I do think that in most cases you will be
+better served by using one of the remaining supported chroot types
+which we know to be in active production use.
+
 1. The shared library has been renamed to `libschroot` rather than the
    historical `libsbuild` and likewise the primary namespace is now
    `schroot` rather than `sbuild`.  To prevent conflicts with the new
@@ -38,11 +55,22 @@ configuration.
    needed.  Please mount these by hand and use the `directory` chroot
    type as a replacement.
 
-6. FreeBSD is now a supported platform.  OpenPAM is now usable as a
+6. The `plain` chroot type has been removed.  This existed primarily
+   due to historical reasons; before setup scripts were fully trusted,
+   this type existed as an alternative to the `directory` type which
+   avoided any setup scripts, filesystem mounting, etc.  Removing it
+   allows a number of special cases to be dropped, since setup scripts
+   are now run unconditionally.  Please replace these with the
+   `directory` chroot type.  If this is not acceptable, please use the
+   standard `chroot` command in place of `schroot`.
+
+7. FreeBSD is now a supported platform.  OpenPAM is now usable as a
    replacement for Linux-PAM on FreeBSD, and Linux-specific behaviour
    in the code, configuration and setup scripts has been replaced with
    portable equivalents, or will conditionally use the appropriate
-   FreeBSD- or Linux-specific approach.
+   FreeBSD- or Linux-specific approach.  Additional refinement of the
+   FreeBSD support will follow in subsequent releases, for example
+   with jail support once the architecture of schroot allows it.
 
 ## 1.7.2
 

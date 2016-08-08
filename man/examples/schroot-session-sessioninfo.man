@@ -14,7 +14,6 @@
 FS|KRB5_CONFIG|KRBCONFDIR|KRBTKFILE|KRB_CONF|LD_.*|LOCALDOMA\\
 IN|NLSPATH|PATH_LOCALE|RES_OPTIONS|TERMINFO|TERMINFO_DIRS|TE\\
 RMPATH)$
-  Run Setup Scripts      true
   Script Configuration   script\-defaults
   Session Managed        true
   Personality            linux
