@@ -133,11 +133,9 @@ set(public_chroot_cc_sources
 set(public_chroot_facet_h_sources
     chroot/facet/custom.h
     chroot/facet/directory.h
-    chroot/facet/directory-base.h
     chroot/facet/facet.h
     chroot/facet/factory.h
     chroot/facet/file.h
-    chroot/facet/plain.h
     chroot/facet/session.h
     chroot/facet/session-clonable.h
     chroot/facet/session-setup.h
@@ -154,11 +152,9 @@ set(public_chroot_facet_h_sources
 set(public_chroot_facet_cc_sources
     chroot/facet/custom.cc
     chroot/facet/directory.cc
-    chroot/facet/directory-base.cc
     chroot/facet/facet.cc
     chroot/facet/factory.cc
     chroot/facet/file.cc
-    chroot/facet/plain.cc
     chroot/facet/session.cc
     chroot/facet/session-clonable.cc
     chroot/facet/session-setup.cc

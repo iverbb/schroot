@@ -20,7 +20,8 @@
 #define SCHROOT_CHROOT_FACET_DIRECTORY_H
 
 #include <schroot/config.h>
-#include <schroot/chroot/facet/directory-base.h>
+#include <schroot/chroot/facet/facet.h>
+#include <schroot/chroot/facet/storage.h>
 #ifdef SCHROOT_FEATURE_BTRFSSNAP
 #include <schroot/chroot/facet/btrfs-snapshot.h>
 #endif
@@ -38,9 +39,13 @@ namespace schroot
        * It runs setup scripts and can provide multiple sessions
        * using the union facet.
        */
-      class directory : public directory_base
+      class directory : public facet,
+                        public storage
       {
       public:
+        /// Exception type.
+        typedef chroot::error error;
+
         /// A shared_ptr to a chroot facet object.
         typedef std::shared_ptr<directory> ptr;
 
@@ -96,14 +101,48 @@ namespace schroot
         virtual facet::ptr
         clone () const;
 
+        /**
+         * Get the directory containing the chroot.
+         *
+         * @returns the location.
+         */
+        std::string const&
+        get_directory () const;
+
+        /**
+         * Set the directory containing the chroot.
+         *
+         * @param directory the directory.
+         */
+        void
+        set_directory (const std::string& directory);
+
         virtual std::string
         get_path () const;
+
+        virtual void
+        setup_env (environment& env) const;
 
       protected:
         virtual void
         setup_lock (chroot::setup_type type,
                     bool               lock,
                     int                status);
+
+        virtual void
+        get_details (format_detail& detail) const;
+
+        virtual void
+        get_used_keys (string_list& used_keys) const;
+
+        virtual void
+        get_keyfile (keyfile& keyfile) const;
+
+        virtual void
+        set_keyfile (const keyfile& keyfile);
+
+        /// The directory to use.
+        std::string directory_;
       };
 
     }

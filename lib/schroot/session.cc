@@ -1097,14 +1097,6 @@ namespace schroot
     if (this->lock_status == false)
       return;
 
-    if (((setup_type == chroot::chroot::SETUP_START   ||
-          setup_type == chroot::chroot::SETUP_RECOVER ||
-          setup_type == chroot::chroot::SETUP_STOP ||
-          setup_type == chroot::chroot::EXEC_START ||
-          setup_type == chroot::chroot::EXEC_STOP) &&
-         session_chroot->get_run_setup_scripts() == false))
-      return;
-
     if (setup_type == chroot::chroot::SETUP_START)
       this->chroot_status = true;
 

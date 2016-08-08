@@ -24,14 +24,12 @@ lib/schroot/chroot/chroot.cc
 lib/schroot/chroot/config.cc
 lib/schroot/chroot/facet/btrfs-snapshot.cc
 lib/schroot/chroot/facet/custom.cc
-lib/schroot/chroot/facet/directory-base.cc
 lib/schroot/chroot/facet/directory.cc
 lib/schroot/chroot/facet/facet.cc
 lib/schroot/chroot/facet/factory.cc
 lib/schroot/chroot/facet/file.cc
 lib/schroot/chroot/facet/fsunion.cc
 lib/schroot/chroot/facet/personality.cc
-lib/schroot/chroot/facet/plain.cc
 lib/schroot/chroot/facet/session-clonable.cc
 lib/schroot/chroot/facet/session-setup.cc
 lib/schroot/chroot/facet/session.cc

@@ -110,9 +110,8 @@ done through the action of \fIsetup scripts\fP which may be customised and
 extended to perform any actions required.  Typical actions include mounting the
 user's home directory, setting up networking and system databases, and even
 starting up services.  These are again entirely customisable by the admin.  The
-setup scripts are run for all types of chroot, with the exception of the
-\[oq]plain\[cq] type, the simplest chroot type, offering no automated setup
-features at all.  The configuration of schroot is covered in more detail in
+setup scripts are run for all types of chroot.  The configuration of schroot is
+covered in more detail in
 .BR schroot.conf (5).
 .SH OPTIONS
 \fBschroot\fP accepts the following options:
@@ -441,8 +440,8 @@ A chroot may be needed to run more than one command.  In particular, where the
 chroot is created on the fly from a filesystem snapshot or a file on disc,
 there is a need to make the chroot persistent while a given task (or set of
 tasks) is performed.  Sessions exist for this purpose.  For simple chroot types
-such as \[oq]plain\[cq] and \[oq]directory\[cq], sessions may be created but
-are not strictly necessary.
+such as \[oq]directory\[cq], sessions may be created but are not strictly
+necessary.
 .PP
 Let's start by looking at a session-capable chroot:
 .PP

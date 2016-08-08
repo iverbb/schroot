@@ -24,21 +24,13 @@ if(BUILD_BTRFSSNAP)
       btrfs-snapshot.cc)
 endif(BUILD_BTRFSSNAP)
 
-if(BUILD_PERSONALITY)
-  set(schroot_personality_sources
-    personality.cc)
-endif(BUILD_PERSONALITY)
-
 set(chroot_sources
     chroot.h
     chroot.cc
-    plain.cc
     custom.cc
     file.cc
     directory.cc
-    ${blockdev_sources}
     ${btrfssnap_sources}
-    ${loopback_sources}
     facet/userdata.cc)
 
 if (BUILD_TESTS)

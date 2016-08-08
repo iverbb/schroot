@@ -76,3 +76,5 @@ if (BUILD_TESTS)
                         ${Intl_LIBRARIES})
   add_test(schroot/run-parts run-parts)
 endif (BUILD_TESTS)
+
+add_subdirectory(chroot)

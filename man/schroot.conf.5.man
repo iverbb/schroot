@@ -44,11 +44,10 @@ the section \[lq]\fIChroot Names\fP\[rq] below.
 This is then followed by several key-value pairs, one per line:
 .TP
 \f[CBI]type=\fP\f[CI]type\fP
-The type of the chroot.  Valid types are \[oq]plain\[cq], \[oq]directory\[cq],
-\[oq]file\[cq] and \[oq]btrfs\-snapshot\[cq].  If empty or omitted, the default
-type is \[oq]plain\[cq].  Note that \[oq]plain\[cq] chroots do not run setup
-scripts and mount filesystems; \[oq]directory\[cq] is recommended for normal
-use (see \[lq]\fIPlain and directory chroots\fP\[rq], below).
+The type of the chroot.  Valid types are \[oq]directory\[cq], \[oq]file\[cq]
+and \[oq]btrfs\-snapshot\[cq].  If empty or omitted, the default type is
+\[oq]directory\[cq], which is recommended for normal use (see \[lq]\fIDirectory
+chroots\fP\[rq], below).
 .TP
 \f[CBI]description=\fP\f[CI]description\fP
 A short description of the chroot.  This may be localised for different
@@ -237,15 +236,10 @@ using the following regular expression:
 .na
 \[lq]\f[CR]^(BASH_ENV\:|CDPATH\:|ENV\:|HOSTALIASES\:|IFS\:|KRB5_CONFIG\:|KRBCONFDIR\:|KRBTKFILE\:|KRB_CONF\:|LD_.*\:|LOCALDOMAIN\:|NLSPATH\:|PATH_LOCALE\:|RES_OPTIONS\:|TERMINFO\:|TERMINFO_DIRS\:|TERMPATH)$\fP\[rq].
 .ad
-.SS Plain and directory chroots
-Chroots of type \[oq]plain\[cq] or \[oq]directory\[cq] are directories
-accessible in the filesystem.  The two types are equivalent except for the fact
-that directory chroots run setup scripts, whereas plain chroots do not.  In
-consequence, filesystems such as \fI/proc\fP are not mounted in plain chroots;
-it is the responsibility of the system administrator to configure such chroots
-by hand, whereas directory chroots are automatically configured.  Additionally,
-directory chroots implement the \fBfilesystem union chroot\fP options (see
-\[lq]\fIFilesystem Union chroot options\fP\[rq], below).
+.SS Directory chroots
+Chroots of type \[oq]directory\[cq] are directories accessible in the
+filesystem.  Additionally, directory chroots implement the \fBfilesystem union
+chroot\fP options (see \[lq]\fIFilesystem Union chroot options\fP\[rq], below).
 .PP
 These chroot types have an additional (mandatory) configuration option:
 .TP
@@ -254,12 +248,10 @@ The directory containing the chroot environment.  This is where the root will
 be changed to when executing a login shell or a command.  The directory must
 exist and have read and execute permissions to allow users access to it.  Note
 that on Linux systems it will be bind-mounted elsewhere for use as a chroot;
-the directory for \[oq]plain\[cq] chroots is mounted with the \fI\-\-rbind\fP
-option to
+the directory is mounted with the \fI\-\-bind\fP option to
 .BR mount (8),
-while for \[oq]directory\[cq] chroots \fI\-\-bind\fP is used instead so that
-sub-mounts are not preserved (they should be set in the \fIfstab\fP file just
-like in \fI/etc/fstab\fP on the host).
+so that sub-mounts are not preserved (they should be set in the \fIfstab\fP
+file just like in \fI/etc/fstab\fP on the host).
 .SS File chroots
 Chroots of type \[oq]file\[cq] are files on the current filesystem containing
 an archive of the chroot files.  They implement the \fBsource chroot\fP options

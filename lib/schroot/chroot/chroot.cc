@@ -25,7 +25,6 @@
 #ifdef SCHROOT_FEATURE_PERSONALITY
 #include <schroot/chroot/facet/personality.h>
 #endif // SCHROOT_FEATURE_PERSONALITY
-#include <schroot/chroot/facet/plain.h>
 #include <schroot/chroot/facet/session.h>
 #include <schroot/chroot/facet/session-clonable.h>
 #include <schroot/chroot/facet/source.h>
@@ -382,14 +381,6 @@ namespace schroot
       this->original = original;
     }
 
-    bool
-    chroot::get_run_setup_scripts () const
-    {
-      facet::plain::const_ptr plain = get_facet<facet::plain>();
-
-      return !static_cast<bool>(plain);
-    }
-
     std::string const&
     chroot::get_script_config () const
     {
@@ -610,7 +601,6 @@ namespace schroot
         .add(_("Preserve Environment"), get_preserve_environment())
         .add(_("Default Shell"), get_default_shell())
         .add(_("Environment Filter"), get_environment_filter())
-        .add(_("Run Setup Scripts"), get_run_setup_scripts())
         .add(_("Configuration Profile"), get_profile())
         .add(_("Script Configuration"), get_script_config())
         .add(_("Session Managed"),

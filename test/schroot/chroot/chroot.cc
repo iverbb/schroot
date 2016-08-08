@@ -245,11 +245,6 @@ TEST_F(Chroot, ScriptConfig)
   }
 }
 
-TEST_F(Chroot, RunSetupScripts)
-{
-  ASSERT_TRUE(chroot->get_run_setup_scripts());
-}
-
 TEST_F(Chroot, Verbose)
 {
   ASSERT_EQ(chroot->get_verbosity(), schroot::chroot::chroot::VERBOSITY_QUIET);

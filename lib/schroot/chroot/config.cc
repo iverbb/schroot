@@ -199,17 +199,6 @@ namespace schroot
           chroots.insert(std::make_pair(name, chroot));
           this->aliases.insert(std::make_pair(fullname, fullname));
 
-          // If a plain chroot, add a proxy session so that --run-session
-          // works.
-          if (chroot_namespace == "chroot" &&
-              chroot->get_chroot_type() == "plain")
-            {
-              std::string session_alias = std::string("session") +
-                namespace_separator + name;
-              if (this->aliases.find(session_alias) == this->aliases.end())
-                this->aliases.insert(std::make_pair(session_alias, fullname));
-            }
-
           // Set up aliases.
           const string_list& aliases = chroot->get_aliases();
           for (const auto& alias : aliases)
@@ -593,7 +582,7 @@ namespace schroot
       const string_list& groups = kconfig.get_groups();
       for (const auto& group : groups)
         {
-          std::string type = "plain"; // "plain" is the default type.
+          std::string type = "directory"; // "directory" is the default type.
           kconfig.get_value(group, "type", type);
           chroot::ptr chroot = chroot::create(type);
 

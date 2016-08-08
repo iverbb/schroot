@@ -282,8 +282,3 @@ TEST_F(BtrfsSnapshot, PrintConfig)
   // TODO: Compare output.
   ASSERT_FALSE(os.str().empty());
 }
-
-TEST_F(BtrfsSnapshot, RunSetupScripts)
-{
-  ASSERT_TRUE(chroot->get_run_setup_scripts());
-}

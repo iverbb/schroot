@@ -1,7 +1,7 @@
 # Sample configuration
 
 [sid]
-type=plain
+type=directory
 description=Debian unstable
 description[fr_FR]=Debian instable
 directory=/srv/chroot/sid
@@ -10,17 +10,6 @@ users=jim
 groups=sbuild
 root\-users=rleigh
 aliases=unstable,default
-
-[etch]
-type=block\-device
-description=Debian testing (32\-bit)
-priority=2
-groups=users
-#groups=sbuild\-security
-aliases=testing
-device=/dev/hda_vg/etch_chroot
-mount\-options=\-o atime
-personality=linux32
 
 [sid\-file]
 type=file

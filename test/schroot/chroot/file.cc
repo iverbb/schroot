@@ -274,8 +274,3 @@ TEST_F(ChrootFile, PrintConfig)
   // TODO: Compare output.
   ASSERT_FALSE(os.str().empty());
 }
-
-TEST_F(ChrootFile, RunSetupScripts)
-{
-  ASSERT_TRUE(chroot->get_run_setup_scripts());
-}
