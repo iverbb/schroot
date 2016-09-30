@@ -45,7 +45,7 @@ do_kill_all()
 
     chrootpath=$1
 
-    info "[$(date +"%T,%N")] Killing processes run inside $chrootpath"
+    info "Killing processes run inside $chrootpath"
 
     # pids of running procs will be added to a string 'killproclist' (bash with arrays not always available)
     # format: (string) "pid==executable pid==executable [...]"
@@ -55,7 +55,7 @@ do_kill_all()
     for pid in $(ls /proc | egrep '^[[:digit:]]+$'); do
         # Check if process root are the same device/inode as chroot
         # root (for efficiency)
-        if [ /proc/"$pid"/root -ef "$chrootpath" ]; then
+        if [ -e /proc/"$pid"/root ] && [ /proc/"$pid"/root -ef "$chrootpath" ]; then
             # Check if process and chroot root are the same (may be
             # different even if device/inode match).
             root=$(readlink /proc/"$pid"/root || true)
@@ -102,7 +102,7 @@ do_kill_all()
         fi
     done
 
-    info "[$(date +"%T,%N")] Finished killing processes run inside $chrootpath"
+    info "Finished killing processes run inside $chrootpath"
 }
 
 if [ $STAGE = "setup-recover" ] || [ $STAGE = "setup-stop" ]; then
