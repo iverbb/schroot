@@ -250,31 +250,6 @@ namespace schroot
 
       long hl = 256; /* sysconf(_SC_HOST_NAME_MAX); BROKEN with Debian libc6 2.3.2.ds1-22 */
 
-      char *hostname = new char[hl];
-      try
-        {
-          if (gethostname(hostname, hl) != 0)
-            {
-              log_debug(DEBUG_CRITICAL) << "gethostname FAIL" << endl;
-              throw error(HOSTNAME, strerror(errno));
-            }
-
-          if ((pam_status =
-               pam_set_item(this->pamh, PAM_RHOST, hostname)) != PAM_SUCCESS)
-            {
-              log_debug(DEBUG_WARNING) << "pam_set_item (PAM_RHOST) FAIL" << endl;
-              throw error(_("Set RHOST"), PAM, pam_strerror(pam_status));
-            }
-        }
-      catch (const error& e)
-        {
-          delete[] hostname;
-          hostname = 0;
-          throw;
-        }
-      delete[] hostname;
-      hostname = 0;
-
       const char *tty = ttyname(STDIN_FILENO);
       if (tty)
         {
