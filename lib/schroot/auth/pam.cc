@@ -248,8 +248,6 @@ namespace schroot
           throw error(_("Set RUSER"), PAM, pam_strerror(pam_status));
         }
 
-      long hl = 256; /* sysconf(_SC_HOST_NAME_MAX); BROKEN with Debian libc6 2.3.2.ds1-22 */
-
       const char *tty = ttyname(STDIN_FILENO);
       if (tty)
         {
