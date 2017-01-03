@@ -78,7 +78,7 @@ namespace schroot
       directory::directory (const btrfs_snapshot& rhs):
         facet(rhs),
         storage(rhs),
-        directory_(rhs.directory_)
+        directory_()
       {
         set_directory(rhs.get_source_subvolume());
       }
