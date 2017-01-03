@@ -1,0 +1,10 @@
+before_script:
+  - apt-get update -qq && apt-get install -y -qq cmake debhelper pkg-config libpam0g-dev libboost-all-dev gettext libgtest-dev groff-base po4a doxygen graphviz fakeroot
+
+stages:
+  - build
+
+standard:
+  stage: build
+  script:
+    - ./scripts/ci-build
