@@ -73,6 +73,7 @@ copy_file()
 
         # Copy only if files are different
         if [ "$COPY" = "true" ]; then
+            mkdir -p $(dirname $2)
             if [ -f "$1" ]; then
                 cp -p $CP_VERBOSE "$1" "$2"
             else
