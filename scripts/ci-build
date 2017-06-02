@@ -1,15 +1,15 @@
 #!/bin/sh
-# Test commit with Travis CI (travis-ci.org)
+# Test commit
 
 set -e
 set -x
 
 download_cmake()
 {
-  if [ ! -d travis-downloads ]; then
+  if [ ! -d downloads ]; then
     (
-      mkdir travis-downloads
-      cd travis-downloads
+      mkdir downloads
+      cd downloads
       wget http://www.cmake.org/files/v3.6/cmake-3.6.0-Linux-x86_64.tar.gz
     )
   fi
@@ -17,7 +17,7 @@ download_cmake()
 
 unpack_cmake()
 {
-  tar xf travis-downloads/cmake-3.6.0-Linux-x86_64.tar.gz
+  tar xf downloads/cmake-3.6.0-Linux-x86_64.tar.gz
   echo "$(pwd)/cmake-3.6.0-Linux-x86_64/bin"
 }
 
