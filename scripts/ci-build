@@ -4,21 +4,25 @@
 set -e
 set -x
 
+cmake_version_major=3
+cmake_version_minor=8
+cmake_version_patch=2
+
 download_cmake()
 {
   if [ ! -d downloads ]; then
     (
       mkdir downloads
       cd downloads
-      wget http://www.cmake.org/files/v3.6/cmake-3.6.0-Linux-x86_64.tar.gz
+      wget https://cmake.org/files/v${cmake_version_major}.${cmake_version_minor}/cmake-${cmake_version_major}.${cmake_version_minor}.${cmake_version_patch}-Linux-x86_64.tar.gz
     )
   fi
 }
 
 unpack_cmake()
 {
-  tar xf downloads/cmake-3.6.0-Linux-x86_64.tar.gz
-  echo "$(pwd)/cmake-3.6.0-Linux-x86_64/bin"
+  tar xf downloads/cmake-${cmake_version_major}.${cmake_version_minor}.${cmake_version_patch}-Linux-x86_64.tar.gz
+  echo "$(pwd)/cmake-${cmake_version_major}.${cmake_version_minor}.${cmake_version_patch}-Linux-x86_64/bin"
 }
 
 cpp()
