@@ -9,6 +9,9 @@ obsoleted in the interim by architectural changes.
 
 ## Planned changes
 
+- Update man/examples/schroot-session-chrootinfo.man and
+  man/examples/schroot-session-sessioninfo.man to use ZFS snapshot.
+
 - Add API to run multiple commands to replace `auth::run()`.
 
 - Add extra file permissions checking.
