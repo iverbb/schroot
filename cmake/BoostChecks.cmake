@@ -3,7 +3,7 @@ set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_LIBS OFF)
 
 find_package(Boost 1.46 REQUIRED
-             COMPONENTS filesystem system iostreams program_options regex)
+             COMPONENTS filesystem system iostreams program_options)
 
 include(CheckIncludeFileCXX)
 include(CheckCXXSourceCompiles)
