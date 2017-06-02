@@ -44,10 +44,10 @@ the section \[lq]\fIChroot Names\fP\[rq] below.
 This is then followed by several key-value pairs, one per line:
 .TP
 \f[CBI]type=\fP\f[CI]type\fP
-The type of the chroot.  Valid types are \[oq]directory\[cq], \[oq]file\[cq]
-and \[oq]btrfs\-snapshot\[cq].  If empty or omitted, the default type is
-\[oq]directory\[cq], which is recommended for normal use (see \[lq]\fIDirectory
-chroots\fP\[rq], below).
+The type of the chroot.  Valid types are \[oq]directory\[cq] and
+\[oq]file\[cq].  If empty or omitted, the default type is \[oq]directory\[cq],
+which is recommended for normal use (see \[lq]\fIDirectory chroots\fP\[rq],
+below).
 .TP
 \f[CBI]description=\fP\f[CI]description\fP
 A short description of the chroot.  This may be localised for different
@@ -275,22 +275,6 @@ archive contains a chroot in \fI/squeeze\fP, you would specify
 \[lq]/squeeze\[rq] here.  If the chroot is the only thing in the archive,
 i.e. \fI/\fP is the root filesystem for the chroot, this option should be left
 blank, or omitted entirely.
-.SS Btrfs snapshot chroots
-Chroots of type \[oq]btrfs\-snapshot\[cq] are a Btrfs snapshot created from an
-existing Btrfs subvolume on a mounted Btrfs filesystem.  A snapshot will be
-created from this source subvolume on demand at the start of a session, and
-then the snapshot will be mounted.  At the end of the session, the snapshot
-will be unmounted and deleted.  This chroot type implements the \fBsource
-chroot\fP options (see \[lq]\fISource chroot options\fP\[rq], below).  Note
-that a corresponding source chroot (of type \[oq]directory\[cq]) will be
-created for each chroot of this type; this is for convenient access to the
-source volume. These additional options are also implemented:
-.TP
-\f[CBI]btrfs\-source\-subvolume=\fP\f[CI]directory\fP
-The directory containing the source subvolume.
-.TP
-\f[CBI]btrfs\-snapshot\-directory=\fP\f[CI]directory\fP
-The directory in which to store the snapshots of the above source subvolume.
 .SS Custom chroots
 Chroots of type \[oq]custom\[cq] are a special type of chroot, used for
 implementing new types of chroot not supported by any of the above chroot
@@ -314,21 +298,20 @@ default).
 Set whether or not source chroots may be cloned using this chroot (disabled by
 default).
 .SS Source chroot options
-The \[oq]btrfs\-snapshot\[cq], \[oq]file\[cq] and chroot types implement source
-chroots.  Additionally, chroot types with union support enabled implement
-source chroots (see \[lq]\fIFilesystem Union chroot options\fP\[rq], below).
-These are chroots which automatically create a copy of themselves before use,
-and are usually session managed.  These chroots additionally provide an extra
-chroot in the \fIsource:\fP namespace, to allow convenient access to the
-original (non-snapshotted) data, and to aid in chroot maintenance.  I.e. for a
-chroot named \fIwheezy\fP (\fIchroot:wheezy\fP), a corresponding
-\fIsource:wheezy\fP chroot will be created.  For compatibility with older
-versions of schroot which did not support namespaces, a chroot with a
-\fI\-source\fP suffix appended to the chroot name will be created in addition
-(i.e. \fIwheezy\-source\fP using the above example).  Note that these
-compatibility names will be removed in schroot 1.5.0, so the use of the
-\fIsource:\fP namespace is preferred over the use of the \fI-source\fP suffix
-form.  See
+The \[oq]file\[cq] chroot type implements source chroots.  Additionally, chroot
+types with union support enabled implement source chroots (see
+\[lq]\fIFilesystem Union chroot options\fP\[rq], below).  These are chroots
+which automatically create a copy of themselves before use, and are usually
+session managed.  These chroots additionally provide an extra chroot in the
+\fIsource:\fP namespace, to allow convenient access to the original
+(non-snapshotted) data, and to aid in chroot maintenance.  I.e. for a chroot
+named \fIwheezy\fP (\fIchroot:wheezy\fP), a corresponding \fIsource:wheezy\fP
+chroot will be created.  For compatibility with older versions of schroot which
+did not support namespaces, a chroot with a \fI\-source\fP suffix appended to
+the chroot name will be created in addition (i.e. \fIwheezy\-source\fP using
+the above example).  Note that these compatibility names will be removed in
+schroot 1.5.0, so the use of the \fIsource:\fP namespace is preferred over the
+use of the \fI-source\fP suffix form.  See
 .BR schroot (1)
 for further details.
 .PP

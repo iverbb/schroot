@@ -183,16 +183,6 @@ if(BUILD_PAM)
 endif(BUILD_PAM)
 
 
-# Btrfs snapshot mount feature
-find_program(BTRFS_EXECUTABLE btrfs PATHS /sbin /usr/sbin /usr/local/sbin)
-set(BTRFSSNAP_DEFAULT OFF)
-if (BTRFS_EXECUTABLE)
-  set (BTRFSSNAP_DEFAULT ON)
-endif (BTRFS_EXECUTABLE)
-option(btrfs-snapshot "Enable support for btrfs snapshots (requires Btrfs)" ${BTRFSSNAP_DEFAULT})
-set(BUILD_BTRFSSNAP ${btrfs-snapshot})
-set(SCHROOT_FEATURE_BTRFSSNAP ${btrfs-snapshot})
-
 # Filesystem union mount feature
 set(UNION_DEFAULT ON)
 option(union "Enable support for union mounts" ${UNION_DEFAULT})

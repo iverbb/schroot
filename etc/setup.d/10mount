@@ -136,8 +136,7 @@ if [ "$VERBOSE" = "verbose" ]; then
 fi
 
 if [ "$CHROOT_TYPE" = "directory" ] \
-    || [ "$CHROOT_TYPE" = "file" ] \
-    || [ "$CHROOT_TYPE" = "btrfs-snapshot" ]; then
+    || [ "$CHROOT_TYPE" = "file" ]; then
 
     if [ "${CHROOT_UNION_TYPE:-none}" != "none" ]; then
         CREATE_UNION="yes"
@@ -165,9 +164,6 @@ if [ "$CHROOT_TYPE" = "directory" ] \
         elif [ "$CHROOT_TYPE" = "file" ]; then
             CHROOT_MOUNT_OPTIONS="$BINDOPT $CHROOT_MOUNT_OPTIONS"
             CHROOT_MOUNT_DEVICE="${CHROOT_FILE_UNPACK_DIR}/${SESSION_ID}"
-        elif [ "$CHROOT_TYPE" = "btrfs-snapshot" ]; then
-            CHROOT_MOUNT_OPTIONS="$BINDOPT $CHROOT_MOUNT_OPTIONS"
-            CHROOT_MOUNT_DEVICE="$CHROOT_BTRFS_SNAPSHOT_NAME"
         fi
 
         if [ ! -d "$CHROOT_MOUNT_LOCATION" ]; then

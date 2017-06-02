@@ -17,14 +17,3 @@ description=Debian sid file\-based chroot
 priority=3
 groups=sbuild
 file=/srv/chroots/sid.tar.gz
-
-[sid\-snapshot]
-type=btrfs\-snapshot
-description=Debian unstable LVM snapshot
-priority=3
-groups=sbuild
-users=rleigh
-source\-root\-users=rleigh
-source\-root\-groups=admin
-btrfs\-source\-subvolume=/srv/chroots/sid-snap
-btrfs\-snapshot\-directory=/srv/chroots/snapshots

@@ -22,7 +22,6 @@ lib/schroot/auth/pam-message.cc
 lib/schroot/auth/pam.cc
 lib/schroot/chroot/chroot.cc
 lib/schroot/chroot/config.cc
-lib/schroot/chroot/facet/btrfs-snapshot.cc
 lib/schroot/chroot/facet/custom.cc
 lib/schroot/chroot/facet/directory.cc
 lib/schroot/chroot/facet/facet.cc
