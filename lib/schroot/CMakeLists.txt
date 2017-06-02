@@ -46,13 +46,6 @@ if(BUILD_PERSONALITY)
       personality.cc)
 endif(BUILD_PERSONALITY)
 
-if(BUILD_BTRFSSNAP)
-  set(public_btrfssnap_h_sources
-      chroot/facet/btrfs-snapshot.h)
-  set(public_btrfssnap_cc_sources
-      chroot/facet/btrfs-snapshot.cc)
-endif(BUILD_BTRFSSNAP)
-
 if(BUILD_UNION)
   set(public_union_h_sources
       chroot/facet/fsunion.h)
@@ -144,7 +137,6 @@ set(public_chroot_facet_h_sources
     chroot/facet/source-setup.h
     chroot/facet/storage.h
     chroot/facet/userdata.h
-    ${public_btrfssnap_h_sources}
     ${public_personality_facet_h_sources}
     ${public_union_h_sources}
     ${public_unshare_h_sources})
@@ -163,7 +155,6 @@ set(public_chroot_facet_cc_sources
     chroot/facet/source-setup.cc
     chroot/facet/storage.cc
     chroot/facet/userdata.cc
-    ${public_btrfssnap_cc_sources}
     ${public_personality_facet_cc_sources}
     ${public_union_cc_sources}
     ${public_unshare_cc_sources})

@@ -19,18 +19,12 @@
 include_directories(${GTEST_INCLUDE_DIR}
                     ${PROJECT_SOURCE_DIR}/bin)
 
-if(BUILD_BTRFSSNAP)
-  set(btrfssnap_sources
-      btrfs-snapshot.cc)
-endif(BUILD_BTRFSSNAP)
-
 set(chroot_sources
     chroot.h
     chroot.cc
     custom.cc
     file.cc
     directory.cc
-    ${btrfssnap_sources}
     facet/userdata.cc)
 
 if (BUILD_TESTS)

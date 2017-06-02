@@ -17,8 +17,8 @@ Lightweight virtualisation tool
 - Run entirely different architectures in the virtual environment, for
   example a PowerPC, ARM or MIPS platform on an amd64 host system--no
   need to cross-compile when you can run the host directly
-- Snapshotting, including use of Btrfs and union filesystems, to
-  provide clean copies of the virtual environment
+- Snapshotting, including use of union filesystems, to provide clean
+  copies of the virtual environment
 - Session management--create persistent or temporary named copies of a
   virtual environment
 - All the above may be done in parallel with multiple users
@@ -94,7 +94,6 @@ fakeroot ctest -V
 After running CMake as above, run `cmake -LH` to see basic
 configurable options.  The following basic options are supported:
 
-- `btrfs-snapshot=(ON|OFF)` Enable support for btrfs snapshots (requires Btrfs)
 - `debug=(ON|OFF)` Enable debugging messages
 - `default_environment_filter=REGEX` Default environment filter
 - `doxygen=(ON|OFF)` Enable doxygen documentation

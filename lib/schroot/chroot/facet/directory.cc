@@ -74,16 +74,6 @@ namespace schroot
       {
       }
 
-#ifdef SCHROOT_FEATURE_BTRFSSNAP
-      directory::directory (const btrfs_snapshot& rhs):
-        facet(rhs),
-        storage(rhs),
-        directory_()
-      {
-        set_directory(rhs.get_source_subvolume());
-      }
-#endif // SCHROOT_FEATURE_BTRFSSNAP
-
       void
       directory::set_chroot (chroot& chroot,
                              bool    copy)
@@ -110,14 +100,6 @@ namespace schroot
       {
         return ptr(new directory());
       }
-
-#ifdef SCHROOT_FEATURE_BTRFSSNAP
-      directory::ptr
-      directory::create (const btrfs_snapshot& rhs)
-      {
-        return ptr(new directory(rhs));
-      }
-#endif // SCHROOT_FEATURE_BTRFSSNAP
 
       facet::ptr
       directory::clone () const

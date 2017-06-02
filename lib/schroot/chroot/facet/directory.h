@@ -22,9 +22,6 @@
 #include <schroot/config.h>
 #include <schroot/chroot/facet/facet.h>
 #include <schroot/chroot/facet/storage.h>
-#ifdef SCHROOT_FEATURE_BTRFSSNAP
-#include <schroot/chroot/facet/btrfs-snapshot.h>
-#endif
 
 namespace schroot
 {
@@ -59,19 +56,11 @@ namespace schroot
         /// The copy constructor.
         directory (const directory& rhs);
 
-#ifdef SCHROOT_FEATURE_BTRFSSNAP
-        /// The copy constructor.
-        directory (const btrfs_snapshot& rhs);
-#endif // SCHROOT_FEATURE_BTRFSSNAP
-
         void
         set_chroot (chroot& chroot,
                     bool    copy);
 
         friend class chroot;
-#ifdef SCHROOT_FEATURE_BTRFSSNAP
-        friend class btrfs_snapshot;
-#endif // SCHROOT_FEATURE_BTRFSSNAP
 
       public:
         /// The destructor.
@@ -87,16 +76,6 @@ namespace schroot
          */
         static ptr
         create ();
-
-#ifdef SCHROOT_FEATURE_BTRFSSNAP
-        /**
-         * Create a chroot facet from a btrfs snapshot.
-         *
-         * @returns a shared_ptr to the new chroot facet.
-         */
-        static ptr
-        create (const btrfs_snapshot& rhs);
-#endif // SCHROOT_FEATURE_BTRFSSNAP
 
         virtual facet::ptr
         clone () const;
