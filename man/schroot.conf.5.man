@@ -314,17 +314,17 @@ default).
 Set whether or not source chroots may be cloned using this chroot (disabled by
 default).
 .SS Source chroot options
-The \[oq]btrfs\-snapshot\[cq], \[oq]file\[cq] and \[oq]lvm-snapshot\[cq] chroot
-types implement source chroots.  Additionally, chroot types with union support
-enabled implement source chroots (see \[lq]\fIFilesystem Union chroot
-options\fP\[rq], below).  These are chroots which automatically create a copy
-of themselves before use, and are usually session managed.  These chroots
-additionally provide an extra chroot in the \fIsource:\fP namespace, to allow
-convenient access to the original (non-snapshotted) data, and to aid in chroot
-maintenance.  I.e. for a chroot named \fIwheezy\fP (\fIchroot:wheezy\fP), a
-corresponding \fIsource:wheezy\fP chroot will be created.  For compatibility
-with older versions of schroot which did not support namespaces, a chroot with
-a \fI\-source\fP suffix appended to the chroot name will be created in addition
+The \[oq]btrfs\-snapshot\[cq], \[oq]file\[cq] and chroot types implement source
+chroots.  Additionally, chroot types with union support enabled implement
+source chroots (see \[lq]\fIFilesystem Union chroot options\fP\[rq], below).
+These are chroots which automatically create a copy of themselves before use,
+and are usually session managed.  These chroots additionally provide an extra
+chroot in the \fIsource:\fP namespace, to allow convenient access to the
+original (non-snapshotted) data, and to aid in chroot maintenance.  I.e. for a
+chroot named \fIwheezy\fP (\fIchroot:wheezy\fP), a corresponding
+\fIsource:wheezy\fP chroot will be created.  For compatibility with older
+versions of schroot which did not support namespaces, a chroot with a
+\fI\-source\fP suffix appended to the chroot name will be created in addition
 (i.e. \fIwheezy\-source\fP using the above example).  Note that these
 compatibility names will be removed in schroot 1.5.0, so the use of the
 \fIsource:\fP namespace is preferred over the use of the \fI-source\fP suffix
