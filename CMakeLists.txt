@@ -16,6 +16,21 @@
 cmake_minimum_required(VERSION 3.2.0)
 cmake_policy(VERSION 3.2.0)
 
+# Require C++14 support
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+if(NOT CMAKE_CXX_STANDARD_REQUIRED)
+  set(CMAKE_CXX_STANDARD_REQUIRED 14)
+endif()
+# Require C11 support
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 11)
+endif()
+if(NOT CMAKE_C_STANDARD_REQUIRED)
+  set(CMAKE_C_STANDARD_REQUIRED 11)
+endif()
+
 project(schroot)
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
