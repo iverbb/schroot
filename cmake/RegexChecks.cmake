@@ -1,61 +1,50 @@
 include(CheckCXXSourceRuns)
 
-function(regex_test namespace header includedirs library outvar outlib)
-  set(CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${includedirs})
-  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} ${library})
+function(regex_test outvar)
   check_cxx_source_runs(
-"#include <${header}>
+"#include <regex>
 #include <iostream>
 
 int main() {
-  ${namespace} foo(\"^foo[bar]\$\");
-  ${namespace} bar(\"^foo[bar]\$\", ${namespace}::extended);
-  ${namespace} chk(\"^[^:/,.][^:/,]*\$\", ${namespace}::extended);
+  std::regex foo(\"^foo[bar]\$\");
+  std::regex bar(\"^foo[bar]\$\", std::regex::extended);
+  std::regex chk(\"^[^:/,.][^:/,]*\$\", std::regex::extended);
 
   std::string test(\"foob\");
   std::string fail(\"fail:\");
 
-  if (!${namespace}_search(test, foo)) return 1;
-  if (!${namespace}_search(test, bar)) return 2;
-  if (!${namespace}_search(test, chk)) return 3;
-  if (${namespace}_search(fail, foo)) return 4;
-  if (${namespace}_search(fail, bar)) return 5;
-  if (${namespace}_search(fail, chk)) return 6;
+  if (!std::regex_search(test, foo)) return 1;
+  if (!std::regex_search(test, bar)) return 2;
+  if (!std::regex_search(test, chk)) return 3;
+  if (std::regex_search(fail, foo)) return 4;
+  if (std::regex_search(fail, bar)) return 5;
+  if (std::regex_search(fail, chk)) return 6;
 
-  if (!${namespace}_match(test, foo)) return 7;
-  if (!${namespace}_match(test, bar)) return 8;
-  if (!${namespace}_match(test, chk)) return 9;
-  if (${namespace}_match(fail, foo)) return 10;
-  if (${namespace}_match(fail, bar)) return 11;
-  if (${namespace}_match(fail, chk)) return 12;
+  if (!std::regex_match(test, foo)) return 7;
+  if (!std::regex_match(test, bar)) return 8;
+  if (!std::regex_match(test, chk)) return 9;
+  if (std::regex_match(fail, foo)) return 10;
+  if (std::regex_match(fail, bar)) return 11;
+  if (std::regex_match(fail, chk)) return 12;
 
   // Checks for broken support in GCC 4.9 and 5.1
-  ${namespace} range1(\"^[a-z0-9][a-z0-9-]*\$\", ${namespace}::extended);
-  ${namespace} range2(\"^[a-z0-9][-a-z0-9]*\$\", ${namespace}::extended);
-  if (!${namespace}_match(test, range1)) return 13;
-  if (!${namespace}_match(test, range2)) return 14;
-  if (!${namespace}_match(\"a-\", range1)) return 15;
-  if (!${namespace}_match(\"a-\", range2)) return 16;
-  if (${namespace}_match(\"-a\", range1)) return 17;
-  if (${namespace}_match(\"-a\", range2)) return 18;
+  std::regex range1(\"^[a-z0-9][a-z0-9-]*\$\", std::regex::extended);
+  std::regex range2(\"^[a-z0-9][-a-z0-9]*\$\", std::regex::extended);
+  if (!std::regex_match(test, range1)) return 13;
+  if (!std::regex_match(test, range2)) return 14;
+  if (!std::regex_match(\"a-\", range1)) return 15;
+  if (!std::regex_match(\"a-\", range2)) return 16;
+  if (std::regex_match(\"-a\", range1)) return 17;
+  if (std::regex_match(\"-a\", range2)) return 18;
 
   return 0;
 }"
 ${outvar})
 
   set(${outvar} ${${outvar}} PARENT_SCOPE)
-  if (${outvar})
-    set(${outlib} ${library} PARENT_SCOPE)
-  endif(${outvar})
 endfunction(regex_test)
 
-regex_test(std::regex regex "" "" HAVE_REGEX_REGEX REGEX_LIBRARY)
+regex_test(HAVE_REGEX_REGEX)
 if(NOT HAVE_REGEX_REGEX)
-  regex_test(std::tr1::regex tr1/regex "" "" HAVE_TR1_REGEX REGEX_LIBRARY)
-  if(NOT HAVE_TR1_REGEX)
-    regex_test(boost::regex boost/regex.hpp "${Boost_INCLUDE_DIRS}" "${Boost_REGEX_LIBRARY_RELEASE}" HAVE_BOOST_REGEX REGEX_LIBRARY)
-    if(NOT HAVE_BOOST_REGEX)
       message(FATAL_ERROR "No working regular expression implementation found")
-    endif(NOT HAVE_BOOST_REGEX)
-  endif(NOT HAVE_TR1_REGEX)
-endif(NOT HAVE_REGEX_REGEX)
+endif()

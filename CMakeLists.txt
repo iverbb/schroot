@@ -13,8 +13,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.2.0)
-cmake_policy(VERSION 3.2.0)
+cmake_minimum_required(VERSION 3.8.0)
+cmake_policy(VERSION 3.8.0)
+cmake_policy(SET CMP0067 NEW)
+
+# Require C++14 support
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
+if(NOT CMAKE_CXX_STANDARD_REQUIRED)
+  set(CMAKE_CXX_STANDARD_REQUIRED 14)
+endif()
+# Require C11 support
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 11)
+endif()
+if(NOT CMAKE_C_STANDARD_REQUIRED)
+  set(CMAKE_C_STANDARD_REQUIRED 11)
+endif()
 
 project(schroot)
 
