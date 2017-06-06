@@ -15,7 +15,7 @@
 # along with this program.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-have schroot &&
+_have schroot &&
 _schroot()
 {
     local cur prev options
@@ -33,5 +33,4 @@ _schroot()
         COMPREPLY=( $(compgen -W "$options" -- $cur) )
     fi
     return 0
-}
-complete -F _schroot schroot
+} && complete -F _schroot schroot
