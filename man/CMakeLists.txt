@@ -135,6 +135,7 @@ foreach(manpage_source ${manpage_sources})
 
     add_custom_command(OUTPUT ${manpage}
                        COMMAND ${SOELIM_EXECUTABLE}
+                               -r
                                ${manpage_includes}
                                < "${manpage_source_file}"
                                > "${manpage}"
