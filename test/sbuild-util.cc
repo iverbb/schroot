@@ -90,7 +90,11 @@ public:
     CPPUNIT_ASSERT(sh == "/bin/sh" ||
                    sh == "/usr/bin/sh" ||
                    sh == "/usr/local/bin/sh");
-    CPPUNIT_ASSERT(sbuild::find_program_in_path("sed", path, "") == "/bin/sed");
+
+    auto sed = sbuild::find_program_in_path("sed", path, "");
+    CPPUNIT_ASSERT(sed == "/bin/sed" ||
+                   sed == "/usr/bin/sed" ||
+                   sed == "/usr/local/bin/sed");
   }
 
 };
