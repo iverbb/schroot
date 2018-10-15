@@ -105,7 +105,9 @@ void
 chroot_facet_mountable::setup_env (chroot const& chroot,
                                    environment&  env) const
 {
-  env.add("CHROOT_MOUNT_DEVICE", get_mount_device());
+  const auto& device = get_mount_device();
+  if (!device.empty())
+    env.add("CHROOT_MOUNT_DEVICE", get_mount_device());
   env.add("CHROOT_MOUNT_OPTIONS", get_mount_options());
   env.add("CHROOT_LOCATION", get_location());
 }

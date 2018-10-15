@@ -36,7 +36,7 @@ class test_environment : public TestFixture
   CPPUNIT_TEST(test_add_string_pair);
   CPPUNIT_TEST(test_add_template);
   CPPUNIT_TEST(test_add_string);
-  CPPUNIT_TEST(test_add_empty_implicit_remove);
+  CPPUNIT_TEST(test_add_empty);
   CPPUNIT_TEST(test_remove_strv);
   CPPUNIT_TEST(test_remove_env);
   CPPUNIT_TEST(test_remove_value);
@@ -72,6 +72,7 @@ public:
     this->env->add(std::make_pair("SHELL", "/bin/sh"));
     this->env->add(std::make_pair("USER", "root"));
     this->env->add(std::make_pair("COLUMNS", "80"));
+    this->env->add(std::make_pair("EMPTY", ""));
 
     this->half_env = new sbuild::environment;
     this->half_env->add(std::make_pair("TERM", "wy50"));
@@ -106,10 +107,10 @@ public:
   test_construction()
   {
     const char *items[] = {"TERM=wy50", "SHELL=/bin/sh",
-                           "USER=root", "COLUMNS=80", 0};
+                           "USER=root", "COLUMNS=80", "EMPTY=", 0};
     sbuild::environment e(const_cast<char **>(&items[0]));
 
-    CPPUNIT_ASSERT(e.size() == 4);
+    CPPUNIT_ASSERT(e.size() == 5);
 
     CPPUNIT_ASSERT(e == *this->env);
   }
@@ -118,11 +119,11 @@ public:
   test_add_strv()
   {
     const char *items[] = {"TERM=wy50", "SHELL=/bin/sh",
-                           "USER=root", "COLUMNS=80", 0};
+                           "USER=root", "COLUMNS=80", "EMPTY=", 0};
     sbuild::environment e;
     e.add(const_cast<char **>(&items[0]));
 
-    CPPUNIT_ASSERT(e.size() == 4);
+    CPPUNIT_ASSERT(e.size() == 5);
 
     CPPUNIT_ASSERT(e == *this->env);
   }
@@ -144,6 +145,7 @@ public:
     e.add(sbuild::environment::value_type("SHELL", "/bin/sh"));
     e.add(sbuild::environment::value_type("USER", "root"));
     e.add(sbuild::environment::value_type("COLUMNS", "80"));
+    e.add(sbuild::environment::value_type("EMPTY", ""));
 
     CPPUNIT_ASSERT(e == *this->env);
   }
@@ -156,6 +158,7 @@ public:
     e.add("SHELL", "/bin/sh");
     e.add("USER", "root");
     e.add("COLUMNS", "80");
+    e.add("EMPTY", "");
 
     CPPUNIT_ASSERT(e == *this->env);
   }
@@ -168,6 +171,7 @@ public:
     e.add("SHELL", "/bin/sh");
     e.add("USER", std::string("root"));
     e.add("COLUMNS", 80);
+    e.add("EMPTY", "");
 
     CPPUNIT_ASSERT(e == *this->env);
   }
@@ -180,21 +184,25 @@ public:
     e.add("SHELL=/bin/sh");
     e.add("USER=root");
     e.add("COLUMNS=80");
+    e.add("EMPTY=");
 
     CPPUNIT_ASSERT(e == *this->env);
   }
 
   void
-  test_add_empty_implicit_remove()
+  test_add_empty()
   {
     sbuild::environment e;
     e.add("TERM=wy50");
     e.add("USER=root");
+    e.add("COLUMNS=");
+    e.add("EMPTY=");
+    e.add("SHELL=");
 
     this->env->add("COLUMNS=");
     this->env->add(sbuild::environment::value_type("SHELL", ""));
 
-    CPPUNIT_ASSERT(this->env->size() == 2);
+    CPPUNIT_ASSERT(this->env->size() == 5);
     CPPUNIT_ASSERT(e == *this->env);
   }
 
@@ -202,7 +210,8 @@ public:
   test_remove_strv()
   {
     const char *items[] = {"SHELL=/bin/bash",
-                           "COLUMNS=160", 0};
+                           "COLUMNS=160",
+                           "EMPTY=", 0};
     this->env->remove(const_cast<char **>(&items[0]));
 
     CPPUNIT_ASSERT(this->env->size() == 2);
@@ -215,6 +224,7 @@ public:
     sbuild::environment e;
     e.add("SHELL=/bin/bash");
     e.add("COLUMNS=160");
+    e.add("EMPTY=");
 
     this->env->remove(e);
 
@@ -226,6 +236,7 @@ public:
   {
     this->env->remove(sbuild::environment::value_type("SHELL", "/bin/bash"));
     this->env->remove(sbuild::environment::value_type("COLUMNS", "160"));
+    this->env->remove(sbuild::environment::value_type("EMPTY", ""));
 
     CPPUNIT_ASSERT(*this->env == *this->half_env);
   }
@@ -235,6 +246,7 @@ public:
   {
     this->env->remove("SHELL=/bin/bash");
     this->env->remove("COLUMNS=160");
+    this->env->remove("EMPTY=");
 
     CPPUNIT_ASSERT(*this->env == *this->half_env);
   }
@@ -248,6 +260,7 @@ public:
     CPPUNIT_ASSERT(this->env->get("COLUMNS", value) && value == "80");
     // Check failure doesn't overwrite value.
     CPPUNIT_ASSERT(!this->env->get("MUSTFAIL", value) && value == "80");
+    CPPUNIT_ASSERT(this->env->get("EMPTY", value) && value == "");
 
     // Check getting templated types.
     int tval;
@@ -261,11 +274,12 @@ public:
     int size = 0;
     for (char **ev = strv; ev != 0 && *ev != 0; ++ev, ++size);
 
-    CPPUNIT_ASSERT(size == 4);
+    CPPUNIT_ASSERT(size == 5);
     CPPUNIT_ASSERT(std::string(strv[0]) == "COLUMNS=80");
-    CPPUNIT_ASSERT(std::string(strv[1]) == "SHELL=/bin/sh");
-    CPPUNIT_ASSERT(std::string(strv[2]) == "TERM=wy50");
-    CPPUNIT_ASSERT(std::string(strv[3]) == "USER=root");
+    CPPUNIT_ASSERT(std::string(strv[1]) == "EMPTY=");
+    CPPUNIT_ASSERT(std::string(strv[2]) == "SHELL=/bin/sh");
+    CPPUNIT_ASSERT(std::string(strv[3]) == "TERM=wy50");
+    CPPUNIT_ASSERT(std::string(strv[4]) == "USER=root");
 
     sbuild::strv_delete(strv);
   }
@@ -275,6 +289,7 @@ public:
     sbuild::environment e;
     e.add("SHELL=/bin/sh");
     e.add("COLUMNS=80");
+    e.add("EMPTY=");
 
     sbuild::environment result;
     result = *this->half_env + e;
@@ -283,6 +298,7 @@ public:
     sbuild::environment e2;
     e2 = *this->half_env + "SHELL=/bin/sh";
     e2 = e2 + sbuild::environment::value_type("COLUMNS", "80");
+    e2 = e2 + sbuild::environment::value_type("EMPTY", "");
     CPPUNIT_ASSERT(e2 == *this->env);
   }
 
@@ -291,6 +307,7 @@ public:
     sbuild::environment e;
     e.add("SHELL=/bin/sh");
     e.add("COLUMNS=80");
+    e.add("EMPTY=");
 
     sbuild::environment result(*this->half_env);
     result += e;
@@ -301,6 +318,8 @@ public:
     // TODO: Why does calling direct fail?
     sbuild::environment::value_type val("COLUMNS", "80");
     e2 += val;
+    sbuild::environment::value_type val2("EMPTY", "");
+    e2 += val2;
     CPPUNIT_ASSERT(e2 == *this->env);
   }
 
@@ -309,6 +328,7 @@ public:
     sbuild::environment e;
     e.add("SHELL=/bin/sh");
     e.add("COLUMNS=80");
+    e.add("EMPTY=");
 
     sbuild::environment result;
     result = *this->env - e;
@@ -317,6 +337,7 @@ public:
     sbuild::environment e2;
     e2 = *this->env - "SHELL=/bin/sh";
     e2 = e2 - sbuild::environment::value_type("COLUMNS", "80");
+    e2 = e2 - sbuild::environment::value_type("EMPTY", "");
     CPPUNIT_ASSERT(e2 == *this->half_env);
   }
 
@@ -325,6 +346,7 @@ public:
     sbuild::environment e;
     e.add("SHELL=/bin/sh");
     e.add("COLUMNS=80");
+    e.add("EMPTY=");
 
     sbuild::environment result(*this->env);
     result -= e;
@@ -335,6 +357,8 @@ public:
     // TODO: Why does calling direct fail?
     sbuild::environment::value_type val("COLUMNS", "80");
     e2 -= val;
+    sbuild::environment::value_type val2("EMPTY", "");
+    e2 -= val2;
     CPPUNIT_ASSERT(e2 == *this->half_env);
   }
 
@@ -374,6 +398,7 @@ public:
 
     CPPUNIT_ASSERT(os.str() ==
                    "COLUMNS=80\n"
+                   "EMPTY=\n"
                    "SHELL=/bin/sh\n"
                    "TERM=wy50\n"
                    "USER=root\n");

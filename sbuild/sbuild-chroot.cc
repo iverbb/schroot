@@ -551,7 +551,9 @@ sbuild::chroot::setup_env (chroot const& chroot,
   env.add("CHROOT_NAME", chroot.get_name());
   env.add("SESSION_ID", chroot.get_name());
   env.add("CHROOT_DESCRIPTION", chroot.get_description());
-  env.add("CHROOT_MOUNT_LOCATION", chroot.get_mount_location());
+  const auto& location = chroot.get_mount_location();
+  if (!location.empty())
+    env.add("CHROOT_MOUNT_LOCATION", chroot.get_mount_location());
   env.add("CHROOT_PATH", chroot.get_path());
   if (!chroot.get_script_config().empty())
     env.add("CHROOT_SCRIPT_CONFIG", normalname(std::string(SCHROOT_SYSCONF_DIR) +  '/' + chroot.get_script_config()));

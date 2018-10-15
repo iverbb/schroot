@@ -93,9 +93,9 @@ environment::add (std::string const& value)
 void
 environment::add (value_type const& value)
 {
-  remove(value);
-  if (!value.first.empty() && !value.second.empty())
+  if (!value.first.empty())
     {
+      remove(value);
       if (this->filter.str().empty() ||
           !regex_search(value.first, this->filter))
         {
@@ -105,8 +105,15 @@ environment::add (value_type const& value)
                                   << std::endl;
         }
       else
-        log_debug(DEBUG_INFO) << "Filtered from environment: " << value.first
-                              << std::endl;
+        {
+          log_debug(DEBUG_INFO) << "Filtered from environment: " << value.first
+                                << std::endl;
+        }
+    }
+  else
+    {
+      log_debug(DEBUG_WARNING) << "Attempt to insert environment variable with no name"
+                               << std::endl;
     }
 }
 
