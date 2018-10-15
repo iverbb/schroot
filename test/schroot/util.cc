@@ -70,7 +70,12 @@ TEST(Util, SplitString)
 TEST(Util, FindProgramInPath)
 {
   std::string path("/usr/local/bin:/usr/bin:/bin");
-  ASSERT_EQ(schroot::find_program_in_path("sh", path, ""), "/bin/sh");
+  // On systems with /bin and /usr/bin linked to from the same place,
+  // it may be /usr/bin/sh
+  auto sh = schroot::find_program_in_path("sh", path, "");
+  ASSERT_TRUE(sh == "/bin/sh" ||
+              sh == "/usr/bin/sh" ||
+              sh == "/usr/local/bin/sh");
 
   boost::filesystem::path sed(schroot::find_program_in_path("sed", path, ""));
   ASSERT_EQ(boost::filesystem::path("sed"), sed.filename());
