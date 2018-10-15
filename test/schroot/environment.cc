@@ -38,6 +38,7 @@ public:
     env->add(std::make_pair("SHELL", "/bin/sh"));
     env->add(std::make_pair("USER", "root"));
     env->add(std::make_pair("COLUMNS", "80"));
+    env->add(std::make_pair("EMPTY", ""));
 
     half_env = new schroot::environment;
     half_env->add(std::make_pair("TERM", "wy50"));
@@ -55,21 +56,21 @@ public:
 TEST_F(Environment, Construction)
 {
   const char *items[] = {"TERM=wy50", "SHELL=/bin/sh",
-                           "USER=root", "COLUMNS=80", 0};
+                           "USER=root", "COLUMNS=80", "EMPTY=", 0};
   schroot::environment e(const_cast<char **>(&items[0]));
 
-  ASSERT_EQ(e.size(), 4);
+  ASSERT_EQ(e.size(), 5);
   ASSERT_EQ(e, *env);
 }
 
 TEST_F(Environment, AddStrv)
 {
   const char *items[] = {"TERM=wy50", "SHELL=/bin/sh",
-                         "USER=root", "COLUMNS=80", 0};
+                         "USER=root", "COLUMNS=80", "EMPTY=", 0};
   schroot::environment e;
   e.add(const_cast<char **>(&items[0]));
 
-  ASSERT_EQ(e.size(),4);
+  ASSERT_EQ(e.size(),5);
   ASSERT_EQ(e, *env);
 }
 
@@ -88,6 +89,7 @@ TEST_F(Environment, AddValue)
   e.add(schroot::environment::value_type("SHELL", "/bin/sh"));
   e.add(schroot::environment::value_type("USER", "root"));
   e.add(schroot::environment::value_type("COLUMNS", "80"));
+  e.add(schroot::environment::value_type("EMPTY", ""));
 
   ASSERT_EQ(e, *env);
 }
@@ -99,6 +101,7 @@ TEST_F(Environment, AddStringPair)
   e.add("SHELL", "/bin/sh");
   e.add("USER", "root");
   e.add("COLUMNS", "80");
+  e.add("EMPTY", "");
 
   ASSERT_EQ(e, *env);
 }
@@ -110,6 +113,7 @@ TEST_F(Environment, AddTemplate)
   e.add("SHELL", "/bin/sh");
   e.add("USER", std::string("root"));
   e.add("COLUMNS", 80);
+  e.add("EMPTY", "");
 
   ASSERT_EQ(e, *env);
 }
@@ -121,27 +125,34 @@ TEST_F(Environment, AddString)
   e.add("SHELL=/bin/sh");
   e.add("USER=root");
   e.add("COLUMNS=80");
+  e.add("EMPTY=");
+
 
   ASSERT_EQ(e, *env);
 }
 
-TEST_F(Environment, AddEmptyWithImplicitRemove)
+TEST_F(Environment, AddEmpty)
 {
   schroot::environment e;
   e.add("TERM=wy50");
   e.add("USER=root");
+  e.add("COLUMNS=");
+  e.add("EMPTY=");
+  e.add("SHELL=");
 
   env->add("COLUMNS=");
+  env->add("EMPTY=");
   env->add(schroot::environment::value_type("SHELL", ""));
 
-  ASSERT_EQ(env->size(), 2);
+  ASSERT_EQ(env->size(), 5);
   ASSERT_EQ(e, *env);
 }
 
 TEST_F(Environment, RemoveStrv)
 {
   const char *items[] = {"SHELL=/bin/bash",
-                         "COLUMNS=160", 0};
+                         "COLUMNS=160",
+                         "EMPTY=", 0};
   env->remove(const_cast<char **>(&items[0]));
 
   ASSERT_EQ(env->size(), 2);
@@ -153,6 +164,7 @@ TEST_F(Environment, RemoveEnvironment)
   schroot::environment e;
   e.add("SHELL=/bin/bash");
   e.add("COLUMNS=160");
+  e.add("EMPTY=");
 
   env->remove(e);
 
@@ -163,6 +175,7 @@ TEST_F(Environment, RemoveValue)
 {
   env->remove(schroot::environment::value_type("SHELL", "/bin/bash"));
   env->remove(schroot::environment::value_type("COLUMNS", "160"));
+  env->remove(schroot::environment::value_type("EMPTY", ""));
 
   ASSERT_EQ(*env, *half_env);
 }
@@ -171,6 +184,7 @@ TEST_F(Environment, RemoveString)
 {
   env->remove("SHELL=/bin/bash");
   env->remove("COLUMNS=160");
+  env->remove("EMPTY=");
 
   ASSERT_EQ(*env, *half_env);
 }
@@ -189,6 +203,8 @@ TEST_F(Environment, GetValue)
   // Check failure doesn't overwrite value.
   ASSERT_FALSE(env->get("MUSTFAIL", value));
   ASSERT_EQ(value, "80");
+  ASSERT_TRUE(env->get("EMPTY", value));
+  ASSERT_EQ(value, "");
 
   // Check getting templated types.
   int tval;
@@ -203,11 +219,12 @@ TEST_F(Environment, GetStrv)
   int size = 0;
   for (char **ev = strv; ev != 0 && *ev != 0; ++ev, ++size);
 
-  ASSERT_EQ(size, 4);
+  ASSERT_EQ(size, 5);
   ASSERT_EQ(std::string(strv[0]), "COLUMNS=80");
-  ASSERT_EQ(std::string(strv[1]), "SHELL=/bin/sh");
-  ASSERT_EQ(std::string(strv[2]), "TERM=wy50");
-  ASSERT_EQ(std::string(strv[3]), "USER=root");
+  ASSERT_EQ(std::string(strv[1]), "EMPTY=");
+  ASSERT_EQ(std::string(strv[2]), "SHELL=/bin/sh");
+  ASSERT_EQ(std::string(strv[3]), "TERM=wy50");
+  ASSERT_EQ(std::string(strv[4]), "USER=root");
 
   schroot::strv_delete(strv);
 }
@@ -217,6 +234,7 @@ TEST_F(Environment, OperatorPlus)
   schroot::environment e;
   e.add("SHELL=/bin/sh");
   e.add("COLUMNS=80");
+  e.add("EMPTY=");
 
   schroot::environment result;
   result = *half_env + e;
@@ -225,6 +243,7 @@ TEST_F(Environment, OperatorPlus)
   schroot::environment e2;
   e2 = *half_env + "SHELL=/bin/sh";
   e2 = e2 + schroot::environment::value_type("COLUMNS", "80");
+  e2 = e2 + schroot::environment::value_type("EMPTY", "");
   ASSERT_EQ(e2, *env);
 }
 
@@ -233,6 +252,7 @@ TEST_F(Environment, OperatorPlusEquals)
   schroot::environment e;
   e.add("SHELL=/bin/sh");
   e.add("COLUMNS=80");
+  e.add("EMPTY=");
 
   schroot::environment result(*half_env);
   result += e;
@@ -243,6 +263,8 @@ TEST_F(Environment, OperatorPlusEquals)
   // TODO: Why does calling direct fail?
   schroot::environment::value_type val("COLUMNS", "80");
   e2 += val;
+  schroot::environment::value_type val2("EMPTY", "");
+  e2 += val2;
   ASSERT_EQ(e2, *env);
 }
 
@@ -251,6 +273,7 @@ TEST_F(Environment, OperatorMinus)
   schroot::environment e;
   e.add("SHELL=/bin/sh");
   e.add("COLUMNS=80");
+  e.add("EMPTY=");
 
   schroot::environment result;
   result = *env - e;
@@ -259,6 +282,7 @@ TEST_F(Environment, OperatorMinus)
   schroot::environment e2;
   e2 = *env - "SHELL=/bin/sh";
   e2 = e2 - schroot::environment::value_type("COLUMNS", "80");
+  e2 = e2 - schroot::environment::value_type("EMPTY", "");
   ASSERT_EQ(e2, *half_env);
 }
 
@@ -267,6 +291,7 @@ TEST_F(Environment, OperatorMinusEquals)
   schroot::environment e;
   e.add("SHELL=/bin/sh");
   e.add("COLUMNS=80");
+  e.add("EMPTY=");
 
   schroot::environment result(*env);
   result -= e;
@@ -277,6 +302,8 @@ TEST_F(Environment, OperatorMinusEquals)
   // TODO: Why does calling direct fail?
   schroot::environment::value_type val("COLUMNS", "80");
   e2 -= val;
+  schroot::environment::value_type val2("EMPTY", "");
+  e2 -= val2;
   ASSERT_EQ(e2, *half_env);
 }
 
@@ -318,6 +345,7 @@ TEST_F(Environment, StreamOutput)
 
   ASSERT_EQ(os.str(),
             "COLUMNS=80\n"
+            "EMPTY=\n"
             "SHELL=/bin/sh\n"
             "TERM=wy50\n"
             "USER=root\n");
