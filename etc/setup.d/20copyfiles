@@ -73,6 +73,7 @@ copy_file()
 
         # Copy only if files are different
         if [ "$COPY" = "true" ]; then
+            mkdir -p $(dirname $2)
             if [ -f "$1" ]; then
                 cp -p $CP_VERBOSE "$1" "$2"
             else
@@ -126,14 +127,16 @@ if [ $STAGE = "setup-start" ] || [ $STAGE = "setup-recover" ]; then
 
     if [ -n "$SETUP_COPYFILES" ]; then
         if [ -f "$SETUP_COPYFILES" ]; then
-            while read file; do
-                if echo "$file" | egrep -q '^(#|$)' ; then
+            while read src dst; do
+                : ${dst:=$src}
+                if echo "$src" | egrep -q '^(#|$)' ; then
                     continue
                 fi
-                if echo "$file" | grep -q '^/'; then
-                    copy_file "$file" "$(resolve_path "${CHROOT_PATH}" "$file")"
+                if echo "$src" | grep -q '^/' &&
+                   echo "$dst" | grep -q '^/'; then
+                    copy_file "$src" "$(resolve_path "${CHROOT_PATH}" "$dst")"
                 else
-                    warn "Not copying file with relative path: $file"
+                    warn "Not copying file with relative path: $src -> $dst"
                 fi
             done < "$SETUP_COPYFILES"
         else
