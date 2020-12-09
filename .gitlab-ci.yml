@@ -3,29 +3,62 @@ image: ubuntu:20.04
 stages:
   - build
 
-.build: &build
+.scripts:
+  - &script_debian_dependencies |+
+      apt-get update -qq
+      DEBIAN_FRONTEND=noninteractive apt-get install -y -qq \
+        cmake \
+        debhelper \
+        pkg-config \
+        libpam0g-dev \
+        libboost-all-dev \
+        gettext \
+        libgtest-dev \
+        groff-base \
+        po4a \
+        doxygen \
+        graphviz \
+        fakeroot \
+        wget \
+        git
+
+  - &script_unix_cmake_configure |+
+      mkdir b
+      cd b
+      cmake \
+      "-DCMAKE_INSTALL_PREFIX:PATH=${CI_PROJECT_DIR}/dist" \
+      -Dtest=ON \
+        .. || (cat CMakeFiles/CMakeError.log && exit 1)
+
+  - &script_unix_cmake_build |+
+      cmake --build .
+      fakeroot ctest --output-on-failure
+      cmake --build . --target install
+
+.unix_cmake_configure: &unix_cmake_configure
   before_script:
-    - apt-get update -qq && apt-get install -y -qq cmake debhelper pkg-config libpam0g-dev libboost-all-dev gettext libgtest-dev groff-base po4a doxygen graphviz fakeroot wget git
+    - *script_debian_dependencies
+    - *script_unix_cmake_configure
+
+.unix_cmake_build: &unix_cmake_build
+  extends:
+    - .unix_cmake_configure
+  stage: build
   script:
-    - ./scripts/ci-build
+    - *script_unix_cmake_build
+  artifacts:
+    name: $CI_PROJECT_NAME-$CI_JOB_NAME-bin
+    paths:
+    - dist
 
 ubuntu:20.04:
   image: ubuntu:20.04
+  extends:
+    - .unix_cmake_build
   stage: build
-  <<: *build
-
-debian:stable:
-  image: debian:stable
-  stage: build
-  <<: *build
-
-debian:testing:
-  image: debian:stable
-  stage: build
-  <<: *build
 
 debian:unstable:
   image: debian:unstable
+  extends:
+    - .unix_cmake_build
   stage: build
-  allow_failure: true
-  <<: *build
