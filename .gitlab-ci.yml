@@ -1,4 +1,4 @@
-image: ubuntu:18.04
+image: ubuntu:20.04
 
 stages:
   - build
@@ -9,8 +9,8 @@ stages:
   script:
     - ./scripts/ci-build
 
-ubuntu:18.04:
-  image: ubuntu:18.04
+ubuntu:20.04:
+  image: ubuntu:20.04
   stage: build
   <<: *build
 
