@@ -281,13 +281,14 @@ namespace schroot
       {
         localename = std::locale::classic().name();
       }
+
     std::string::size_type pos;
-    bool status = false;
 
     // Strip off any charset.
     if ((pos = localename.find_first_of('.')) != std::string::npos)
       localename = localename.substr(0, pos);
-    status = get_locale_string(group, key, localename, value);
+
+    bool status = get_locale_string(group, key, localename, value);
 
     // Strip off territory.
     if (status == false &&
