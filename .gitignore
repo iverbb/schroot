@@ -7,3 +7,4 @@
 *.xz
 .gdb_history
 cmake-build-*
+.idea/
