@@ -359,15 +359,6 @@ namespace schroot
       set_environment_filter (const regex& environment_filter);
 
       /**
-       * Get the activity status of the chroot.  The chroot is active if
-       * it has been cloned as a session.
-       *
-       * @returns true if active, false if inactive
-       */
-      bool
-      get_active () const;
-
-      /**
        * Get the originality of the chroot.
        *
        * @returns true if original, false if generated.
