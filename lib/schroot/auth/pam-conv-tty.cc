@@ -58,7 +58,7 @@ namespace
    * @param ignore the signal number (unused).
    */
   void
-  alarm_handler (int ignore)
+  alarm_handler ([[maybe_unused]] int ignore)
   {
     timer_expired = true;
   }

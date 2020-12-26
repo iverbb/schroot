@@ -358,7 +358,7 @@ namespace schroot
     }
 
     void
-    auth::authenticate (status auth_status)
+    auth::authenticate ([[maybe_unused]] status auth_status)
     {
     }
 

@@ -636,7 +636,7 @@ namespace schroot
        */
       template <typename T>
       void
-      remove_facet (std::shared_ptr<T> facet);
+      remove_facet ([[maybe_unused]] std::shared_ptr<T> facet);
 
       /**
        * Replace an existing chroot facet with a new facet.
@@ -915,7 +915,7 @@ namespace schroot
 
     template <typename T>
     void
-    chroot::remove_facet (std::shared_ptr<T> facet)
+    chroot::remove_facet ([[maybe_unused]] std::shared_ptr<T> facet)
     {
       remove_facet<T>();
     }

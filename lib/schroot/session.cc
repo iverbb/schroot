@@ -78,7 +78,7 @@ namespace schroot
      * @param ignore the signal number.
      */
     void
-    sighup_handler (int ignore)
+    sighup_handler ([[maybe_unused]] int ignore)
     {
       /* This exists so that system calls get interrupted. */
       sighup_called = true;
@@ -98,7 +98,7 @@ namespace schroot
      * @param ignore the signal number.
      */
     void
-    sigint_handler (int ignore)
+    sigint_handler ([[maybe_unused]] int ignore)
     {
       /*
        * Allows us to detect if an interrupted waitpid() was interrupted

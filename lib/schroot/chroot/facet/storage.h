@@ -65,9 +65,9 @@ namespace schroot
         get_path () const = 0;
 
         virtual void
-        setup_lock(chroot::setup_type type,
-                   bool               lock,
-                   int                status);
+        setup_lock(chroot::setup_type    type,
+                   [[maybe_unused]] bool lock,
+                   [[maybe_unused]] int  status);
 
       };
 

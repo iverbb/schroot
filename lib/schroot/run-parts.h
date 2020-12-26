@@ -68,7 +68,7 @@ namespace schroot
      * @param umask the umask to set when running scripts.
      */
     run_parts (const std::string& directory,
-               bool               lsb_mode = true,
+              [[maybe_unused]] bool lsb_mode = true,
                bool               abort_on_error = true,
                mode_t             umask = 022);
 
