@@ -46,14 +46,15 @@ foreach(lang ${languages})
 endforeach(lang)
 
 set(po4a_command
-    ${PO4A_EXECUTABLE} --package-name ${CMAKE_PROJECT_NAME}
-    --package-version ${GIT_RELEASE_VERSION}
+    ${PO4A_EXECUTABLE} --package-name "${PROJECT_NAME}"
+    --package-version "${PROJECT_VERSION}"
     --copyright-holder "Roger Leigh <rleigh@codelibre.net>"
     "--srcdir=${CMAKE_CURRENT_SOURCE_DIR}"
     "--destdir=${CMAKE_CURRENT_BINARY_DIR}"
     "${CMAKE_CURRENT_SOURCE_DIR}/po4a.cfg")
 
 if(PO4A_EXECUTABLE)
+  message(STATUS "Checking available manual page translations")
   # We need to run po4a initially to see what it generates, prior to
   # generating the rule to autogenerate from source.
   execute_process(COMMAND ${po4a_command})
@@ -71,13 +72,16 @@ if(PO4A_EXECUTABLE)
             ${translated_files})
     endif(IS_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/translated/${lang}")
   endforeach(lang)
-
+  if(translated_manpage_sources)
   add_custom_command(OUTPUT ${translated_manpage_sources}
                      COMMAND ${po4a_command}
                      DEPENDS ${common_dependencies} ${manpage_sources}
                              ${po_sources}
                              "${CMAKE_CURRENT_SOURCE_DIR}/po4a.cfg"
                      VERBATIM)
+  else()
+    message(WARNING "No manual page translations found")
+  endif()
 else(PO4A_EXECUTABLE)
   message(WARNING "po4a not available; not translating manual pages")
 endif(PO4A_EXECUTABLE)

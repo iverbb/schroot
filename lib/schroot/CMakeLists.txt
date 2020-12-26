@@ -182,7 +182,7 @@ target_link_libraries(libschroot
                         ${Intl_LIBRARIES})
 set_target_properties(libschroot PROPERTIES
                       OUTPUT_NAME schroot
-                      VERSION ${GIT_RELEASE_VERSION})
+                      VERSION ${PROJECT_VERSION})
 
 set(pkgincludedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}/schroot")
 set(pkgincludeauthdir "${CMAKE_INSTALL_FULL_INCLUDEDIR}/schroot/auth")

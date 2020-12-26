@@ -13,53 +13,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.8.0)
-cmake_policy(VERSION 3.8.0)
+cmake_minimum_required(VERSION 3.16.0)
+cmake_policy(VERSION 3.16.0)
 cmake_policy(SET CMP0067 NEW)
 
-# Require C++14 support
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
-if(NOT CMAKE_CXX_STANDARD_REQUIRED)
-  set(CMAKE_CXX_STANDARD_REQUIRED 14)
-endif()
-# Require C11 support
-if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 11)
-endif()
-if(NOT CMAKE_C_STANDARD_REQUIRED)
-  set(CMAKE_C_STANDARD_REQUIRED 11)
-endif()
+# Require C++17 support
+set(CMAKE_CXX_STANDARD 17)
 
-project(schroot)
+
+project(schroot
+        VERSION "1.7.3"
+        DESCRIPTION "Lightweight virtualisation tool"
+        HOMEPAGE_URL "https://gitlab.com/codelibre/schroot"
+        LANGUAGES CXX )
 
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
   message(FATAL_ERROR "In-tree builds are not supported; please run cmake from a separate build directory.")
 endif("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 
-# Obtain version information from VERSION and/or git.
-set(GIT_VERSION_FILE "cmake/GitVersion.cmake"
-    CACHE FILEPATH "Location of version metadata")
-set(GIT_RELEASE_POLICY_FILE "${PROJECT_SOURCE_DIR}/cmake/GitReleasePolicy.cmake"
-    CACHE FILEPATH "Location of release policy configuration")
-include("${PROJECT_SOURCE_DIR}/cmake/GitRelease.cmake")
+set(RELEASE_DATE 1609012261)
+set(RELEASE_DATE_S "unreleased")
+set(RELEASE_DATE_SHORT "unreleased")
 
-set(VERSION ${GIT_RELEASE_VERSION})
-set(RELEASE_DATE ${GIT_RELEASE_DATE_UNIX})
-set(RELEASE_DATE_S ${GIT_RELEASE_DATE})
-
-string(REGEX MATCH "^([0-9]+-[0-9]+-[0-9]+).*" date_valid "${RELEASE_DATE_S}")
-if (date_valid)
-  string(REGEX REPLACE "^([0-9]+-[0-9]+-[0-9]+).*" "\\1"
-         RELEASE_DATE_SHORT ${RELEASE_DATE_S})
-else (date_valid)
-  set(RELEASE_DATE_SHORT ${RELEASE_DATE_S})
-endif (date_valid)
-
-message(STATUS "Configuring ${CMAKE_PROJECT_NAME} ${GIT_RELEASE_VERSION} (${RELEASE_DATE_SHORT})")
-
-# TODO: Check NEWS version
+message(STATUS "Configuring ${PROJECT_NAME} ${PROJECT_VERSION} (${RELEASE_DATE_SHORT})")
 
 include(GNUInstallDirs)
 include(CheckIncludeFileCXX)
@@ -117,29 +93,29 @@ set(bash_completion_dir "${CMAKE_INSTALL_SYSCONFDIR}/bash_completion.d"
 # schroot directories
 set(SCHROOT_LOCALE_DIR "${CMAKE_INSTALL_FULL_LOCALEDIR}"
     CACHE PATH "Locale directory")
-set(SCHROOT_MOUNT_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${CMAKE_PROJECT_NAME}/mount"
+set(SCHROOT_MOUNT_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${PROJECT_NAME}/mount"
     CACHE PATH "Directory under which mount chroots")
-set(SCHROOT_SESSION_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${CMAKE_PROJECT_NAME}/session"
+set(SCHROOT_SESSION_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${PROJECT_NAME}/session"
     CACHE PATH "Directory for storing session metadata")
-set(SCHROOT_FILE_UNPACK_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${CMAKE_PROJECT_NAME}/unpack"
+set(SCHROOT_FILE_UNPACK_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${PROJECT_NAME}/unpack"
     CACHE PATH "Directory for unpacking chroot file archives under")
-set(SCHROOT_OVERLAY_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${CMAKE_PROJECT_NAME}/union/overlay"
+set(SCHROOT_OVERLAY_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${PROJECT_NAME}/union/overlay"
     CACHE PATH "Directory for union filesystem writable overlays")
-set(SCHROOT_UNDERLAY_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${CMAKE_PROJECT_NAME}/union/underlay"
+set(SCHROOT_UNDERLAY_DIR "${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/lib/${PROJECT_NAME}/union/underlay"
     CACHE PATH "Directory for union filesystem read-only underlays")
-set(SCHROOT_MODULE_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/${CMAKE_PROJECT_NAME}/${GIT_RELEASE_VERSION}/modules"
+set(SCHROOT_MODULE_DIR "${CMAKE_INSTALL_FULL_LIBDIR}/${PROJECT_NAME}/${PROJECT_VERSION}/modules"
     CACHE PATH "Directory for loadable modules")
-set(SCHROOT_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${CMAKE_PROJECT_NAME}"
+set(SCHROOT_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}"
     CACHE PATH "Directory for schroot data files")
-set(SCHROOT_LIBEXEC_DIR "${CMAKE_INSTALL_FULL_LIBEXECDIR}/${CMAKE_PROJECT_NAME}"
+set(SCHROOT_LIBEXEC_DIR "${CMAKE_INSTALL_FULL_LIBEXECDIR}/${PROJECT_NAME}"
     CACHE PATH "Directory for schroot helper programs")
-set(SCHROOT_SYSCONF_DIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}/${CMAKE_PROJECT_NAME}"
+set(SCHROOT_SYSCONF_DIR "${CMAKE_INSTALL_FULL_SYSCONFDIR}/${PROJECT_NAME}"
     CACHE PATH "Directory for configuration files")
 set(SCHROOT_CONF_CHROOT_D "${SCHROOT_SYSCONF_DIR}/chroot.d"
     CACHE PATH "Directory for chroot configuration fragments")
 set(SCHROOT_CONF_SETUP_D "${SCHROOT_SYSCONF_DIR}/setup.d"
     CACHE PATH "Directory for chroot setup scripts")
-set(SCHROOT_SETUP_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${CMAKE_PROJECT_NAME}/setup"
+set(SCHROOT_SETUP_DATA_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/setup"
     CACHE PATH "Directory for common setup script data")
 mark_as_advanced(SCHROOT_LOCALE_DIR SCHROOT_MOUNT_DIR
                  SCHROOT_SESSION_DIR SCHROOT_FILE_UNPACK_DIR
@@ -280,17 +256,6 @@ add_subdirectory(po)
 add_subdirectory(man)
 
 add_custom_target(check-news
-  COMMAND if grep -q "Welcome to ${CMAKE_PROJECT_NAME} ${GIT_RELEASE_VERSION}" "${PROJECT_SOURCE_DIR}/NEWS" \; then echo "NEWS current version ${GIT_RELEASE_VERSION}" \; else echo "NEWS current version does not match release version ${GIT_RELEASE_VERSION}" \; exit 1 \; fi
-  COMMAND if grep -q "Major changes in ${GIT_RELEASE_VERSION}:" "${PROJECT_SOURCE_DIR}/NEWS" \; then echo "NEWS contains changes for version ${GIT_RELEASE_VERSION}" \; else echo "NEWS version does not contain changes for version ${GIT_RELEASE_VERSION}" \; exit 1 \; fi)
-
-if(GIT_RELEASE_ENABLE)
-  add_dependencies(git-release check-news)
-endif(GIT_RELEASE_ENABLE)
-
-if(GIT_DIST_ENABLE)
-  add_custom_target(git-changelog
-                    COMMAND git log > ${GIT_DIST_ROOT}/ChangeLog
-                    DEPENDS git-distdir-archive
-                    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-  add_dependencies(git-distdir git-changelog)
-endif(GIT_DIST_ENABLE)
+  COMMAND if grep -q "Welcome to ${PROJECT_NAME} ${PROJECT_VERSION}" "${PROJECT_SOURCE_DIR}/NEWS" \; then echo "NEWS current version ${PROJECT_VERSION}" \; else echo "NEWS current version does not match release version ${PROJECT_VERSION}" \; exit 1 \; fi
+  COMMAND if grep -q "Major changes in ${PROJECT_VERSION}:" "${PROJECT_SOURCE_DIR}/NEWS" \; then echo "NEWS contains changes for version ${PROJECT_VERSION}" \; else echo "NEWS version does not contain changes for version ${PROJECT_VERSION}" \; exit 1 \; fi
+)
