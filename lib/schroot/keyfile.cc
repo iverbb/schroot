@@ -397,7 +397,7 @@ namespace schroot
   const schroot::keyfile::group_type *
   schroot::keyfile::find_group (const group_name_type& group) const
   {
-    group_map_type::const_iterator pos = this->groups.find(group);
+    auto pos = this->groups.find(group);
     if (pos != this->groups.end())
       return &pos->second;
 
@@ -422,7 +422,7 @@ namespace schroot
     if (found_group)
       {
         const item_map_type& items = std::get<1>(*found_group);
-        item_map_type::const_iterator pos = items.find(key);
+        auto pos = items.find(key);
         if (pos != items.end())
           return &pos->second;
       }
