@@ -114,7 +114,7 @@ namespace schroot
        *
        * @returns the delay in seconds, or 0 if no delay is set.
        */
-      int get_delay ();
+      unsigned int get_delay ();
 
       /**
        * @brief Read user input from standard input.
