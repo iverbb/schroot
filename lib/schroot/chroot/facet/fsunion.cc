@@ -151,7 +151,7 @@ namespace schroot
         else
           throw error(type, FSUNION_TYPE_UNKNOWN);
 
-        chroot *base = dynamic_cast<chroot *>(this->owner);
+        chroot *base = this->owner;
         assert(base);
 
         if (this->union_type != "none")
