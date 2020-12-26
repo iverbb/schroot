@@ -118,7 +118,6 @@ namespace schroot
               }
 
             *response = reply;
-            reply = 0;
 
             log_debug(DEBUG_INFO) << "Set PAM conversation reply" << endl;
 
