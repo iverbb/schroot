@@ -129,7 +129,7 @@
 #cmakedefine PACKAGE_URL 1
 
 /* Define to the version of this package. */
-#cmakedefine PACKAGE_VERSION ${VERSION}
+#define PACKAGE_VERSION "${PROJECT_VERSION}"
 
 /* Package release date (integer). */
 #define RELEASE_DATE ${RELEASE_DATE}
@@ -174,4 +174,4 @@
 #cmakedefine TESTDATADIR "${TESTDATADIR}"
 
 /* Version number of package */
-#cmakedefine VERSION "${VERSION}"
+#define VERSION "${PROJECT_VERSION}"
