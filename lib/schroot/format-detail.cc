@@ -66,7 +66,7 @@ namespace schroot
   format_detail::add (const std::string& name,
                       bool               value)
   {
-    const char *desc = 0;
+    const char *desc;
     if (value)
       desc =  _("true");
     else
