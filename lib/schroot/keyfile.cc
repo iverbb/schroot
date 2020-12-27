@@ -291,7 +291,7 @@ namespace schroot
     bool status = get_locale_string(group, key, localename, value);
 
     // Strip off territory.
-    if (status == false &&
+    if (!status &&
         (pos = localename.find_first_of('_')) != std::string::npos)
       {
         localename = localename.substr(0, pos);
@@ -299,7 +299,7 @@ namespace schroot
       }
 
     // Fall back to non-localised version.
-    if (status == false)
+    if (!status)
       status = get_value(group, key, value);
 
     return status;
@@ -452,7 +452,7 @@ namespace schroot
                                     priority               priority,
                                     bool                   valid) const
   {
-    if (valid == false)
+    if (!valid)
       {
         size_type gline = get_line(group);
 

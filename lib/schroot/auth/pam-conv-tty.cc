@@ -221,7 +221,7 @@ namespace schroot
 
           memcpy(&noecho_termios, &orig_termios, sizeof(struct termios));
 
-          if (echo == false)
+          if (!echo)
             noecho_termios.c_lflag &= ~(ECHO);
 
           sigemptyset(&new_sigs);
@@ -238,10 +238,10 @@ namespace schroot
         {
           cctty << message << std::flush;
 
-          if (use_termios == true)
+          if (use_termios)
             tcsetattr(CTTY_FILENO, TCSAFLUSH, &noecho_termios);
 
-          if (delay > 0 && set_alarm(delay, &saved_signals) == false)
+          if (delay > 0 && !set_alarm(delay, &saved_signals))
             break;
           else
             {
@@ -249,7 +249,7 @@ namespace schroot
               if (use_termios)
                 {
                   tcsetattr(CTTY_FILENO, TCSADRAIN, &orig_termios);
-                  if (echo == false && timer_expired == true)
+                  if (!echo && timer_expired == true)
                     cctty << endl;
                 }
               if (delay > 0)
@@ -260,7 +260,7 @@ namespace schroot
                 }
               else if (nchars > 0)
                 {
-                  if (echo == false)
+                  if (!echo)
                     cctty << endl;
 
                   if (input[nchars-1] == '\n')
@@ -273,7 +273,7 @@ namespace schroot
                 }
               else if (nchars == 0)
                 {
-                  if (echo == false)
+                  if (!echo)
                     cctty << endl;
 
                   retval = "";
@@ -284,7 +284,7 @@ namespace schroot
 
       memset(input, 0, sizeof(input));
 
-      if (use_termios == true)
+      if (use_termios)
         {
           sigprocmask(SIG_SETMASK, &old_sigs, 0);
           tcsetattr(CTTY_FILENO, TCSADRAIN, &orig_termios);

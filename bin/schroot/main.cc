@@ -166,9 +166,9 @@ namespace bin
     main::get_chroot_options ()
     {
 
-      if (this->opts->all_chroots == true ||
-          this->opts->all_sessions == true ||
-          this->opts->all_source_chroots == true)
+      if (this->opts->all_chroots ||
+          this->opts->all_sessions ||
+          this->opts->all_source_chroots)
         {
           if (this->opts->all_chroots)
             {
@@ -226,14 +226,14 @@ namespace bin
       this->config = ::schroot::chroot::config::ptr(new ::schroot::chroot::config);
       /* The normal chroot list is used when starting a session or running
          any chroot type or session, or displaying chroot information. */
-      if (this->opts->load_chroots == true)
+      if (this->opts->load_chroots)
         {
           this->config->add("chroot", SCHROOT_CONF);
           this->config->add("chroot", SCHROOT_CONF_CHROOT_D);
         }
       /* The session chroot list is used when running or ending an
          existing session, or displaying chroot information. */
-      if (this->opts->load_sessions == true)
+      if (this->opts->load_sessions)
         this->config->add("session", SCHROOT_SESSION_DIR);
     }
 
@@ -256,17 +256,16 @@ namespace bin
       load_config();
 
       if (this->opts->load_chroots &&
-          this->config->get_chroots("chroot").empty() &&
-          this->opts->quiet == false)
+          this->config->get_chroots("chroot").empty() && !this->opts->quiet)
         log_exception_warning(error(CHROOT_FILE2, SCHROOT_CONF, SCHROOT_CONF_CHROOT_D));
 
       /* Get list of chroots to use */
       get_chroot_options();
       if (this->chroots.empty())
         {
-          if (!(this->opts->all_chroots == true ||
-                this->opts->all_sessions == true ||
-                this->opts->all_source_chroots == true))
+          if (!(this->opts->all_chroots ||
+                this->opts->all_sessions ||
+                this->opts->all_source_chroots))
             throw error(SCHROOT_CONF, CHROOT_NOTDEFINED);
           else
             {
@@ -275,7 +274,7 @@ namespace bin
               // additional chroots were specified with -c; this needs
               // changes in get_chroot_options.
               if (this->opts->verbose)
-                log_exception_warning(error((this->opts->all_chroots == true) ?
+                log_exception_warning(error(this->opts->all_chroots ?
                                             SCHROOT_CONF : SCHROOT_SESSION_DIR,
                                             CHROOT_NOTDEFINED));
               return EXIT_SUCCESS;

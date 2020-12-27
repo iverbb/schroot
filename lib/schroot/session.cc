@@ -496,18 +496,18 @@ namespace schroot
      * changing to root, or if the uid is not changing.  If not
      * in user or group, authentication fails immediately.
      */
-    if ((in_users == true || in_groups == true ||
-         in_root_users == true || in_root_groups == true) &&
+    if ((in_users || in_groups ||
+         in_root_users || in_root_groups) &&
         this->authstat->get_ruid() == this->authstat->get_uid())
       {
         status = auth::auth::change_auth(status, auth::auth::STATUS_NONE);
       }
-    else if ((in_root_users == true || in_root_groups == true) &&
+    else if ((in_root_users || in_root_groups) &&
              this->authstat->get_uid() == 0)
       {
         status = auth::auth::change_auth(status, auth::auth::STATUS_NONE);
       }
-    else if (in_users == true || in_groups == true)
+    else if (in_users || in_groups)
       // Auth required if not in root group
       {
         status = auth::auth::change_auth(status, auth::auth::STATUS_USER);
@@ -1094,7 +1094,7 @@ namespace schroot
       return;
 
     // Don't clean up chroot on a lock failure--it's actually in use.
-    if (this->lock_status == false)
+    if (!this->lock_status)
       return;
 
     if (setup_type == chroot::chroot::SETUP_START)
