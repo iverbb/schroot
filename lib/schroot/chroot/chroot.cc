@@ -449,7 +449,7 @@ namespace schroot
     const char *
     chroot::get_verbosity_string () const
     {
-      const char *verbosity = 0;
+      const char *verbosity;
 
       switch (this->message_verbosity)
         {

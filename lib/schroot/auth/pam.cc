@@ -118,7 +118,6 @@ namespace schroot
               }
 
             *response = reply;
-            reply = 0;
 
             log_debug(DEBUG_INFO) << "Set PAM conversation reply" << endl;
 
@@ -201,11 +200,10 @@ namespace schroot
           reinterpret_cast<void *>(this->conv.get())
         };
 
-      int pam_status;
+      int pam_status = pam_start(this->service.c_str(), this->user.c_str(),
+                                 &conv_hook, &this->pamh);
 
-      if ((pam_status =
-           pam_start(this->service.c_str(), this->user.c_str(),
-                     &conv_hook, &this->pamh)) != PAM_SUCCESS)
+      if (pam_status != PAM_SUCCESS)
         {
           log_debug(DEBUG_WARNING) << "pam_start FAIL" << endl;
           throw error(PAM, pam_strerror(pam_status));
@@ -219,10 +217,9 @@ namespace schroot
     {
       if (this->pamh) // PAM must be initialised
         {
-          int pam_status;
+          int pam_status = pam_end(this->pamh, PAM_SUCCESS);
 
-          if ((pam_status =
-               pam_end(this->pamh, PAM_SUCCESS)) != PAM_SUCCESS)
+          if (pam_status != PAM_SUCCESS)
             {
               log_debug(DEBUG_WARNING) << "pam_end FAIL" << endl;
               throw error(PAM_END);
@@ -239,10 +236,9 @@ namespace schroot
       assert(!this->user.empty());
       assert(this->pamh != 0); // PAM must be initialised
 
-      int pam_status;
+      int pam_status = pam_set_item(this->pamh, PAM_RUSER, this->ruser.c_str());
 
-      if ((pam_status =
-           pam_set_item(this->pamh, PAM_RUSER, this->ruser.c_str())) != PAM_SUCCESS)
+      if (pam_status != PAM_SUCCESS)
         {
           log_debug(DEBUG_WARNING) << "pam_set_item (PAM_RUSER) FAIL" << endl;
           throw error(_("Set RUSER"), PAM, pam_strerror(pam_status));
@@ -308,16 +304,15 @@ namespace schroot
     {
       assert(this->pamh != 0); // PAM must be initialised
 
-      int pam_status;
-
       environment minimal(get_minimal_environment());
 
       // Move into PAM environment.
       for (const auto& env : minimal)
         {
           std::string env_string = env.first + "=" + env.second;
-          if ((pam_status =
-               pam_putenv(this->pamh, env_string.c_str())) != PAM_SUCCESS)
+          int pam_status = pam_putenv(this->pamh, env_string.c_str());
+
+          if (pam_status != PAM_SUCCESS)
             {
               log_debug(DEBUG_WARNING) << "pam_putenv FAIL" << endl;
               throw error(PAM, pam_strerror(pam_status));
@@ -335,10 +330,9 @@ namespace schroot
     {
       assert(this->pamh != 0); // PAM must be initialised
 
-      int pam_status;
+      int pam_status = pam_acct_mgmt(this->pamh, 0);
 
-      if ((pam_status =
-           pam_acct_mgmt(this->pamh, 0)) != PAM_SUCCESS)
+      if (pam_status  != PAM_SUCCESS)
         {
           /* We don't handle changing expired passwords here, since we are
              not login or ssh. */
@@ -354,10 +348,9 @@ namespace schroot
     {
       assert(this->pamh != 0); // PAM must be initialised
 
-      int pam_status;
+      int pam_status = pam_setcred(this->pamh, PAM_ESTABLISH_CRED);
 
-      if ((pam_status =
-           pam_setcred(this->pamh, PAM_ESTABLISH_CRED)) != PAM_SUCCESS)
+      if (pam_status != PAM_SUCCESS)
         {
           log_debug(DEBUG_WARNING) << "pam_setcred FAIL" << endl;
           throw error(PAM, pam_strerror(pam_status));
@@ -378,10 +371,9 @@ namespace schroot
     {
       assert(this->pamh != 0); // PAM must be initialised
 
-      int pam_status;
+      int pam_status = pam_setcred(this->pamh, PAM_DELETE_CRED);
 
-      if ((pam_status =
-           pam_setcred(this->pamh, PAM_DELETE_CRED)) != PAM_SUCCESS)
+      if (pam_status != PAM_SUCCESS)
         {
           log_debug(DEBUG_WARNING) << "pam_setcred (delete) FAIL" << endl;
           throw error(PAM, pam_strerror(pam_status));
@@ -395,10 +387,9 @@ namespace schroot
     {
       assert(this->pamh != 0); // PAM must be initialised
 
-      int pam_status;
+      int pam_status = pam_open_session(this->pamh, 0);
 
-      if ((pam_status =
-           pam_open_session(this->pamh, 0)) != PAM_SUCCESS)
+      if (pam_status != PAM_SUCCESS)
         {
           log_debug(DEBUG_WARNING) << "pam_open_session FAIL" << endl;
           throw error(PAM, pam_strerror(pam_status));
@@ -412,10 +403,9 @@ namespace schroot
     {
       assert(this->pamh != 0); // PAM must be initialised
 
-      int pam_status;
+      int pam_status = pam_close_session(this->pamh, 0);
 
-      if ((pam_status =
-           pam_close_session(this->pamh, 0)) != PAM_SUCCESS)
+      if (pam_status!= PAM_SUCCESS)
         {
           log_debug(DEBUG_WARNING) << "pam_close_session FAIL" << endl;
           throw error(PAM, pam_strerror(pam_status));

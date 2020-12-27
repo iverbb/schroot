@@ -36,9 +36,9 @@ namespace schroot
       }
 
       void
-      storage::setup_lock(chroot::setup_type type,
-                          bool               lock,
-                          int                status)
+      storage::setup_lock([[maybe_unused]] chroot::setup_type type,
+                          [[maybe_unused]] bool lock,
+                          [[maybe_unused]] int  status)
       {
       }
 

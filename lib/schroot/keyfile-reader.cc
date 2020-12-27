@@ -111,22 +111,22 @@ namespace schroot
   void
   keyfile_reader::parse_line (const std::string& line)
   {
-    if (comment_set == true)
+    if (comment_set)
       {
         comment.clear();
         comment_set = false;
       }
-    if (group_set == true)
+    if (group_set)
       {
         // The group isn't cleared
         group_set = false;
       }
-    if (key_set == true)
+    if (key_set)
       {
         key.clear();
         key_set = false;
       }
-    if (value_set == true)
+    if (value_set)
       {
         value.clear();
         value_set = false;

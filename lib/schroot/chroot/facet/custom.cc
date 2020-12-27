@@ -145,8 +145,8 @@ namespace schroot
       {
         /* By default, custom chroots do no locking. */
         /* Create or unlink session information. */
-        if ((type == chroot::SETUP_START && lock == true) ||
-            (type == chroot::SETUP_STOP && lock == false && status == 0))
+        if ((type == chroot::SETUP_START && lock) ||
+            (type == chroot::SETUP_STOP && !lock && status == 0))
           {
 
             bool start = (type == chroot::SETUP_START);

@@ -43,7 +43,7 @@ namespace schroot
 
       void
       facet::set_chroot (chroot& chroot,
-                         bool    copy)
+                         [[maybe_unused]] bool copy)
       {
         this->owner = &chroot;
       }

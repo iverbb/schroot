@@ -177,7 +177,7 @@ namespace schroot
                         int                status)
       {
         // Check ownership and permissions.
-        if (type == chroot::SETUP_START && lock == true)
+        if (type == chroot::SETUP_START && lock)
           {
             stat file_status(this->filename);
 
@@ -192,8 +192,8 @@ namespace schroot
 
         /* By default, file chroots do no locking. */
         /* Create or unlink session information. */
-        if ((type == chroot::SETUP_START && lock == true) ||
-            (type == chroot::SETUP_STOP && lock == false && status == 0))
+        if ((type == chroot::SETUP_START && lock) ||
+            (type == chroot::SETUP_STOP && !lock && status == 0))
           {
 
             bool start = (type == chroot::SETUP_START);

@@ -296,7 +296,7 @@ namespace schroot
     config::chroot_map&
     config::find_namespace (const std::string& chroot_namespace)
     {
-      chroot_namespace_map::iterator pos = this->namespaces.find(chroot_namespace);
+      auto pos = this->namespaces.find(chroot_namespace);
 
       if (pos == this->namespaces.end())
         throw error(chroot_namespace, NAMESPACE_NOTFOUND);
@@ -307,7 +307,7 @@ namespace schroot
     config::chroot_map const&
     config::find_namespace (const std::string& chroot_namespace) const
     {
-      chroot_namespace_map::const_iterator pos = this->namespaces.find(chroot_namespace);
+      auto pos = this->namespaces.find(chroot_namespace);
 
       if (pos == this->namespaces.end())
         throw error(chroot_namespace, NAMESPACE_NOTFOUND);
@@ -351,7 +351,7 @@ namespace schroot
 
       log_debug(DEBUG_NOTICE) << "Looking for chroot " << name << " in namespace " << chroot_namespace << std::endl;
 
-      chroot_map::const_iterator pos = chroots.find(name);
+      auto pos = chroots.find(name);
 
       if (pos != chroots.end())
         return pos->second;

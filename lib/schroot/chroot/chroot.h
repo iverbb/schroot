@@ -359,15 +359,6 @@ namespace schroot
       set_environment_filter (const regex& environment_filter);
 
       /**
-       * Get the activity status of the chroot.  The chroot is active if
-       * it has been cloned as a session.
-       *
-       * @returns true if active, false if inactive
-       */
-      bool
-      get_active () const;
-
-      /**
        * Get the originality of the chroot.
        *
        * @returns true if original, false if generated.
@@ -645,7 +636,7 @@ namespace schroot
        */
       template <typename T>
       void
-      remove_facet (std::shared_ptr<T> facet);
+      remove_facet ([[maybe_unused]] std::shared_ptr<T> facet);
 
       /**
        * Replace an existing chroot facet with a new facet.
@@ -924,7 +915,7 @@ namespace schroot
 
     template <typename T>
     void
-    chroot::remove_facet (std::shared_ptr<T> facet)
+    chroot::remove_facet ([[maybe_unused]] std::shared_ptr<T> facet)
     {
       remove_facet<T>();
     }

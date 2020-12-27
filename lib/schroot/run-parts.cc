@@ -51,10 +51,10 @@ namespace schroot
     };
 
   run_parts::run_parts (const std::string& directory,
-                        bool               lsb_mode,
+                        [[maybe_unused]] bool lsb_mode,
                         bool               abort_on_error,
                         mode_t             umask):
-    lsb_mode(true),
+    lsb_mode(lsb_mode),
     abort_on_error(abort_on_error),
     umask(umask),
     verbose(false),

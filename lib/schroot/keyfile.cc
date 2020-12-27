@@ -281,16 +281,17 @@ namespace schroot
       {
         localename = std::locale::classic().name();
       }
+
     std::string::size_type pos;
-    bool status = false;
 
     // Strip off any charset.
     if ((pos = localename.find_first_of('.')) != std::string::npos)
       localename = localename.substr(0, pos);
-    status = get_locale_string(group, key, localename, value);
+
+    bool status = get_locale_string(group, key, localename, value);
 
     // Strip off territory.
-    if (status == false &&
+    if (!status &&
         (pos = localename.find_first_of('_')) != std::string::npos)
       {
         localename = localename.substr(0, pos);
@@ -298,7 +299,7 @@ namespace schroot
       }
 
     // Fall back to non-localised version.
-    if (status == false)
+    if (!status)
       status = get_value(group, key, value);
 
     return status;
@@ -396,7 +397,7 @@ namespace schroot
   const schroot::keyfile::group_type *
   schroot::keyfile::find_group (const group_name_type& group) const
   {
-    group_map_type::const_iterator pos = this->groups.find(group);
+    auto pos = this->groups.find(group);
     if (pos != this->groups.end())
       return &pos->second;
 
@@ -421,7 +422,7 @@ namespace schroot
     if (found_group)
       {
         const item_map_type& items = std::get<1>(*found_group);
-        item_map_type::const_iterator pos = items.find(key);
+        auto pos = items.find(key);
         if (pos != items.end())
           return &pos->second;
       }
@@ -451,7 +452,7 @@ namespace schroot
                                     priority               priority,
                                     bool                   valid) const
   {
-    if (valid == false)
+    if (!valid)
       {
         size_type gline = get_line(group);
 

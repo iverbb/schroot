@@ -58,7 +58,7 @@ namespace
    * @param ignore the signal number (unused).
    */
   void
-  alarm_handler (int ignore)
+  alarm_handler ([[maybe_unused]] int ignore)
   {
     timer_expired = true;
   }
@@ -72,7 +72,7 @@ namespace
    * @returns true on success, false on failure.
    */
   bool
-  set_alarm (int delay,
+  set_alarm (unsigned int delay,
              struct sigaction *orig_sa)
   {
     struct sigaction new_sa;
@@ -168,10 +168,12 @@ namespace schroot
       this->fatal_timeout = timeout;
     }
 
-    int
+    unsigned int
     pam_conv_tty::get_delay ()
     {
       timer_expired = 0;
+      unsigned int delay_time = 0u;
+
       time (&this->start_time);
 
       if (this->fatal_timeout != 0 &&
@@ -187,12 +189,14 @@ namespace schroot
                   this->fatal_timeout - this->start_time : 0);
         }
 
-      if (this->warning_timeout != 0)
-        return this->warning_timeout - this->start_time;
-      else if (this->fatal_timeout != 0)
-        return this->fatal_timeout - this->start_time;
-      else
-        return 0;
+      if ((this->warning_timeout != 0) &&
+          (this->warning_timeout >= this->start_time))
+        delay_time = static_cast<unsigned int>(this->warning_timeout - this->start_time);
+      else if ((this->fatal_timeout != 0) &&
+          (this->fatal_timeout >= this->start_time))
+        delay_time = static_cast<unsigned int>(this->fatal_timeout - this->start_time);
+
+      return delay_time;
     }
 
     std::string
@@ -217,7 +221,7 @@ namespace schroot
 
           memcpy(&noecho_termios, &orig_termios, sizeof(struct termios));
 
-          if (echo == false)
+          if (!echo)
             noecho_termios.c_lflag &= ~(ECHO);
 
           sigemptyset(&new_sigs);
@@ -228,16 +232,16 @@ namespace schroot
 
       char input[PAM_MAX_MSG_SIZE];
 
-      int delay = get_delay();
+      unsigned int delay = get_delay();
 
       while (delay >= 0)
         {
           cctty << message << std::flush;
 
-          if (use_termios == true)
+          if (use_termios)
             tcsetattr(CTTY_FILENO, TCSAFLUSH, &noecho_termios);
 
-          if (delay > 0 && set_alarm(delay, &saved_signals) == false)
+          if (delay > 0 && !set_alarm(delay, &saved_signals))
             break;
           else
             {
@@ -245,7 +249,7 @@ namespace schroot
               if (use_termios)
                 {
                   tcsetattr(CTTY_FILENO, TCSADRAIN, &orig_termios);
-                  if (echo == false && timer_expired == true)
+                  if (!echo && timer_expired == true)
                     cctty << endl;
                 }
               if (delay > 0)
@@ -256,7 +260,7 @@ namespace schroot
                 }
               else if (nchars > 0)
                 {
-                  if (echo == false)
+                  if (!echo)
                     cctty << endl;
 
                   if (input[nchars-1] == '\n')
@@ -269,7 +273,7 @@ namespace schroot
                 }
               else if (nchars == 0)
                 {
-                  if (echo == false)
+                  if (!echo)
                     cctty << endl;
 
                   retval = "";
@@ -280,7 +284,7 @@ namespace schroot
 
       memset(input, 0, sizeof(input));
 
-      if (use_termios == true)
+      if (use_termios)
         {
           sigprocmask(SIG_SETMASK, &old_sigs, 0);
           tcsetattr(CTTY_FILENO, TCSADRAIN, &orig_termios);

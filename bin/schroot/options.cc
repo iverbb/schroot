@@ -243,7 +243,7 @@ namespace bin
       if (vm.count("force"))
         this->session_force = true;
 
-      if (this->all == true)
+      if (this->all)
         {
           this->all_chroots = true;
           this->all_sessions = true;
@@ -292,7 +292,7 @@ namespace bin
           this->all = this->all_sessions = false;
 
           // If no chroot was specified, fall back to the "default" chroot.
-          if (this->chroots.empty() && all_used() == false)
+          if (this->chroots.empty() && !all_used())
             this->chroots.push_back("default");
         }
       else if (this->action == ACTION_SESSION_BEGIN)

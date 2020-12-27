@@ -151,7 +151,7 @@ namespace schroot
         else
           throw error(type, FSUNION_TYPE_UNKNOWN);
 
-        chroot *base = dynamic_cast<chroot *>(this->owner);
+        chroot *base = this->owner;
         assert(base);
 
         if (this->union_type != "none")
@@ -290,7 +290,7 @@ namespace schroot
                                      const std::string& session_id,
                                      const std::string& alias,
                                      const std::string& user,
-                                     bool               root)
+                                     [[maybe_unused]] bool root)
       {
         // If the parent did not have a union facet, then neither should we.
         fsunion::const_ptr pparentuni(parent.get_facet<fsunion>());
