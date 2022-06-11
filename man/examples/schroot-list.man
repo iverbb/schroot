@@ -1,6 +1,0 @@
-% \f[CB]schroot \-l\fP\[CR]
-chroot:default
-chroot:etch
-chroot:sid
-chroot:testing
-chroot:unstable

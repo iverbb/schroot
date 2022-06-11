@@ -1,2 +1,0 @@
-debian.apt-update=true
-debian.distribution=unstable

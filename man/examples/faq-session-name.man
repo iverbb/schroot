@@ -1,2 +1,0 @@
-% \f[CB]schroot \-\-begin\-session \-c squeeze \-\-session\-name my\-name\fP\[CR]
-my\-name
